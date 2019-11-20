@@ -8,10 +8,10 @@
 
         <!-- La base para contruir todas las rutas de la pagina -->
 
-        <base href="/curso_ipartek_2019/">
+        <base href="/helloweb/">
 
         <!-- estilos -->
-        <link rel="stylesheet" href="/ejercicios/css/stylesSpecify.css">
+        <link rel="stylesheet" href="ejercicios/css/stylesSpecify.css">
 
         <style>
         

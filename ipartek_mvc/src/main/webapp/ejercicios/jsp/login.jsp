@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Login</title>
+    
+    <base href="/helloweb/">
 
     <link rel="stylesheet" href="css/styles.css">
 

@@ -6,15 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 
-    <base href="/curso_ipartek_2019/">
+    <base href="/helloweb/">
+	
+    <link rel="stylesheet" href="ejercicios/css/stylesCssBasico.css">
 
-    <link rel="stylesheet" href="/ejercicios/css/stylesCssBasico.css">
-
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
 
 </head>
 <body>
-
     <script src="/ejercicios/js/mainCssBasico.js">  </script>
     
     <a style="padding-right: 1em;" target="_blank" href="https://formacion.ipartek.com"> Link a Ipartek Formacion </a> 
@@ -81,9 +80,4 @@
 
     <hr>
 
-    <footer>
-        <a href="#top"> Volver </a>
-    </footer>
-
-</body>
-</html>
+<%@include file="/includes/footer.jsp" %>

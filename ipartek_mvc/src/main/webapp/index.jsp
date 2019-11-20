@@ -1,5 +1,5 @@
 <% String titulo = "Index - Curso Ipartek 2019/2020";%>
-<%@include file="includes/header.jsp" %>
+<%@include file="/includes/header.jsp" %>
         <div class="parallax">
 
             <h1> Curso Ipartek  2019/2020 </h1>
@@ -7,7 +7,7 @@
             <h2> Welcome to the main page </h2>
            
         </div>
-<%@include file="includes/nav.jsp" %>
+<%@include file="/includes/nav.jsp" %>
        
         <main>
         <!-- Forma abreviada de crear tablas table.item-style>tr*9>td*2  -->
@@ -23,6 +23,6 @@
             <hr>
 
         </main>
-<%@include file="includes/footer.jsp" %>
+<%@include file="/includes/footer.jsp" %>
        
 

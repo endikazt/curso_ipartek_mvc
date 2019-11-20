@@ -18,9 +18,14 @@
     4. clases
     5. layaouts (secciones de las paginas: head, footer, main, etc)
     6. ids (cosas mas especificas)
+    7. font awesome
 
 
 */
+
+@import url("reset.css");
+@import url("normalize.css");
+@import url("impresora.css") print; /* Para la vista a la hora de imprimir la pagina */
 
 body
 {
@@ -137,6 +142,12 @@ a.menuItem
     width: 100px;
     height: 100px;
     border: 2px solid black;
+}
+
+.fas.fa-eye
+{
+	color: red;
+	font-size: 250px;
 }
 
 

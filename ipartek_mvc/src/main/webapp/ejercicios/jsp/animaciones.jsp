@@ -8,19 +8,25 @@
 
         <!-- La base para contruir todas las rutas de la pagina -->
 
-        <base href="/curso_ipartek_2019/">
+        <base href="/helloweb/">
 
           <!-- estilos -->
-        <link rel="stylesheet" href="/ejercicios/css/stylesPrueba.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="ejercicios/css/stylesPrueba.css">
+        
+        <!-- Font awesome  -->
+        
+       	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
     </head>
     <body>
+    <%@include file="/includes/nav.jsp" %>
 
         <h2> Animaciones Keyframe </h2>
+        
+        <i class="fas fa-eye"></i>
 
         <div class="box-animation"> </div>
-
-        <a href="/index.html"> Volver </a>
 
     </body>
 </html>

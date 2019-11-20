@@ -6,8 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    
     <title>Formulario</title>
+    
+    <base href="/helloweb/">
 
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 
     <style>
         main
@@ -42,6 +44,7 @@
     </style>
 </head>
 <body>
+<%@include file="/includes/nav.jsp" %>
     <main>
         <h1>Formulario</h1>
         <form method="POST" action="#">

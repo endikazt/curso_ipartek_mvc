@@ -1,12 +1,14 @@
  <nav class="menuInicial"> 
-	<a class="menuItem" href="index.html"> Home </a>   
-    <a class="menuItem" href="/ejercicios/html/pruebatecnica.html"> Prueba </a> 
-    <a class="menuItem" href="/ejercicios/html/animaciones.html"> Animaciones </a> 
-    <a class="menuItem" href="/ejercicios/html/cssespecify.html"> CSS Especificidad </a> 
-    <a class="menuItem" href="/ejercicios/html/cssbasico.html"> CSS Selectores basicos </a> 
-    <a class="menuItem" href="/ejercicios/html/cssavanzado.html"> CSS Selectores Avanzados </a>
-    <a class="menuItem" href="/ejercicios/html/visualizacion.html"> Visualizacion </a>  
-    <a class="menuItem" href="/ejercicios/html/posicionamiento.html"> Posicionamiento </a>  
-    <a class="menuItem" href="/ejercicios/html/game.html"> Arkanoid </a>  
-    <a class="menuItem" href="/ejercicios/html/formulario.html"> Formulario </a>      
+	<a class="menuItem" href="index.jsp"> Home </a>   
+    <a class="menuItem" href="ejercicios/jsp/pruebatecnica.jsp"> Prueba </a> 
+    <a class="menuItem" href="ejercicios/jsp/animaciones.jsp"> Animaciones </a> 
+    <a class="menuItem" href="ejercicios/jsp/cssespecify.jsp"> CSS Especificidad </a> 
+    <a class="menuItem" href="ejercicios/jsp/cssbasico.jsp"> CSS Selectores basicos </a> 
+    <a class="menuItem" href="ejercicios/jsp/cssavanzado.jsp"> CSS Selectores Avanzados </a>
+    <a class="menuItem" href="ejercicios/jsp/visualizacion.jsp"> Visualizacion </a>  
+    <a class="menuItem" href="ejercicios/jsp/posicionamiento.jsp"> Posicionamiento </a>  
+    <a class="menuItem" href="ejercicios/jsp/game.jsp"> Arkanoid </a>  
+    <a class="menuItem" href="ejercicios/jsp/formulario.jsp"> Formulario </a>      
+    <a class="menuItem" href="ejercicios/jsp/login.jsp"> Login </a>     
+    <a class="menuItem" href="ejercicios/jsp/flexbox.jsp"> FlexBox </a>      
 </nav> 

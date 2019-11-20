@@ -10,8 +10,7 @@
     <title>Arkanoid</title>
 </head>
 <body>
-
-    <a href="/index.html"> Volver a Inicio </a>
+<%@include file="/includes/nav.jsp" %>
 
     <h1>Arkanoid</h1>
     <canvas id="byCanvas" width="900" height="480"></canvas>
