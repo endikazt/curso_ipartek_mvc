@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Index - Curso Ipartek 2019/2020</title>
-
-        <!-- La base para contruir todas las rutas de la pagina -->
-        <!-- estilos -->
-        <link rel="stylesheet" href="/css/styles.css">
-
-    </head>
-    <body>
-
+<% String titulo = "Index - Curso Ipartek 2019/2020";%>
+<%@include file="includes/header.jsp" %>
         <div class="parallax">
 
             <h1> Curso Ipartek  2019/2020 </h1>
@@ -20,23 +7,8 @@
             <h2> Welcome to the main page </h2>
            
         </div>
-
-        <nav class="menuInicial"> 
-            <a class="menuItem" href="index.html"> Home </a>   
-            <a class="menuItem" href="/ejercicios/html/pruebatecnica.html"> Prueba </a> 
-            <a class="menuItem" href="/ejercicios/html/animaciones.html"> Animaciones </a> 
-            <a class="menuItem" href="/ejercicios/html/cssespecify.html"> CSS Especificidad </a> 
-            <a class="menuItem" href="/ejercicios/html/cssbasico.html"> CSS Selectores basicos </a> 
-            <a class="menuItem" href="/ejercicios/html/cssavanzado.html"> CSS Selectores Avanzados </a>
-            <a class="menuItem" href="/ejercicios/html/visualizacion.html"> Visualizacion </a>  
-            <a class="menuItem" href="/ejercicios/html/posicionamiento.html"> Posicionamiento </a>  
-            <a class="menuItem" href="/ejercicios/html/game.html"> Arkanoid </a>  
-            <a class="menuItem" href="/ejercicios/html/formulario.html"> Formulario </a> 
-            <a class="menuItem" href="login.jsp"> Login </a>  
-      
-      
-        </nav> 
-
+<%@include file="includes/nav.jsp" %>
+       
         <main>
         <!-- Forma abreviada de crear tablas table.item-style>tr*9>td*2  -->
 
@@ -51,15 +23,6 @@
             <hr>
 
         </main>
-     
-        <footer>
+<%@include file="includes/footer.jsp" %>
+       
 
-            <!-- javascript --> 
-        
-            <script src="/js/main.js">  </script>
-
-            <p> Ipartek Web Page &copy; <a href=""> Top </a>  </p>
-            
-        </footer>
-    </body>
-</html>

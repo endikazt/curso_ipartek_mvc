@@ -1,0 +1,76 @@
+body
+{
+    margin: 0% !important;
+    padding: 0% !important;
+}
+
+body
+{
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+section
+{
+    border: 1px solid rgb(206, 205, 205);
+    padding: 10px;
+    background-color: beige;
+    margin-bottom: 25px;
+
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+td
+{
+    border: 2px solid teal;
+    height: 250px;
+    width: 400px;
+    padding: 0.5em;
+}
+
+a.menuItem
+{
+    padding: 1em;
+    margin: auto;
+    color: white;
+}
+
+.menuInicial
+{
+    background-color: teal;
+    padding: 1em;
+}
+
+.parallax
+{
+    background-image: url("/images/office.jpg");
+
+    padding: 1%;
+
+    /* Set a specific height */
+    min-height: 400px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+ 
+}
+
+.parallax h1
+{
+    font-size: 5em;
+    text-align: center;
+    padding-top: 1em;
+    color: teal;
+}
+
+.tablaEjemplos
+{
+    background-color:aliceblue;
+    font-size:26px;
+    margin:auto;
+}

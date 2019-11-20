@@ -1,0 +1,118 @@
+*
+{
+    margin: 0%;
+    padding: 0%;
+}
+
+h1 
+{
+    color: #0099CC;
+    font-size: 5em;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    text-align: center;
+    padding: 0.5%;
+}
+
+body
+{
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+table
+{
+    width: 50%;
+    margin: auto;
+}
+
+th, td 
+{
+    border: 1px solid black; /* shothand */
+    text-align: center;
+    text-transform: capitalize; 
+    padding: 15px;
+    background-color: aquamarine;
+}
+
+td:hover
+{
+    background-color: burlywood;
+}
+
+.parallax
+{
+    background-image: url("/images/office.jpg");
+
+    /* Set a specific height */
+    min-height: 500px; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.parallax h1
+{
+    padding-top: 2em;
+}
+
+.parallax h2
+{
+    padding-top: 0.5em;
+}
+
+.wrapperBoton
+{
+    text-align: center;
+    padding: 1%;
+}
+
+.botonQuienLee
+{
+    margin: auto;
+    padding: 10px;
+}
+
+.wrapperLinkW3, .wrapperLinkW3 h3
+{
+    text-align: center;
+    padding-bottom: 0.5%;
+}
+
+.box-animation
+{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-color: blueviolet;
+    margin: auto;
+    animation: mymove 1s infinite alternate;
+
+}
+
+@keyframes mymove
+{
+    from 
+    {
+        background-color: blueviolet;
+        border-radius: 0%;
+        left: 100%
+    }
+    to {
+        background-color: red;
+        border-radius: 50%;
+        left: 0%;
+    }
+}
+
+.box-animation:hover
+{
+    transition-duration: 2s;
+    background-color: red;
+    border-radius: 50%;
+}

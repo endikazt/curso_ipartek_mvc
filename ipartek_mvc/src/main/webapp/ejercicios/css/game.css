@@ -1,0 +1,41 @@
+/*
+
+    Css para el juego de Arkanoid
+
+*/
+
+*
+{
+    padding: 0%;
+    margin: 0%;
+}
+
+a
+{
+    color: white;
+}
+
+body
+{
+    background-image: url(/images/fondogame.gif);
+}
+
+h1
+{
+    text-align: center;
+    font-family: monospace;
+    text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+    font-size: 3em;
+    color: white;
+    margin: 5% auto;
+}
+
+canvas
+{
+    background-color: white;
+    border: 1px solid black;
+    display: block;
+    margin: auto;
+    background-image: url(/images/290061-P6O4SC-288.jpg);
+    margin-bottom: 10%;
+}
