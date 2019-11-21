@@ -8,13 +8,24 @@
 
         <!-- La base para contruir todas las rutas de la pagina -->
 
-        <base href="/curso_ipartek_2019/">
+        <base href="/helloweb/">
 
         <!-- estilos -->
-        <link rel="stylesheet" href="/ejercicios/css/stylesPrueba.css">
+        <link rel="stylesheet" href="ejercicios/css/stylesPrueba.css">
 
     </head>
     <body>
+    
+    	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+	     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	     <script>
+	     	$(document).ready(function() { //esperar que este todo el DOM cargado y listo
+	     		
+	     		//$('#example') == coument.getElementById('example')
+	    	    $('.tabla').DataTable();
+	    	} );
+	  	 </script>
 
         <!-- javascript --> 
         
@@ -36,7 +47,7 @@
 
         <h3> Voluntario <span id="nombre"> X </span></h3>
         <div  class="wrapperBoton">
-            <button class="botonQuienLee" onclick="buscarVoluntario()"> Â¿Quien lee? </button>
+            <button class="botonQuienLee" onclick="buscarVoluntario()"> ¿Quien lee? </button>
         </div>
 
         <div class="wrapperLinkW3">
@@ -45,7 +56,7 @@
         </div>   
 
         <div style="height:750px;background-color:aliceblue;font-size:26px;margin:auto"> 
-        <table>
+        <table class="tabla display">
             <tr>
                 <td> Aitor </td>
                 <td> Iker </td>

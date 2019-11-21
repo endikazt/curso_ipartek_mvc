@@ -4,15 +4,16 @@
 
             <h1> Curso Ipartek  2019/2020 </h1>
         
-            <h2> Welcome to the main page </h2>
+            <h2> Bienvenido a la pagina principal </h2>
            
         </div>
-<%@include file="/includes/nav.jsp" %>
-       
-        <main>
+<%@include file="/includes/top-nav.jsp" %>
+   		<main>
         <!-- Forma abreviada de crear tablas table.item-style>tr*9>td*2  -->
 
-            <h1> Titulo </h1>
+            <h1> Index </h1>
+
+			<hr>
 
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam ipsum saepe magnam, expedita iste corrupti nihil culpa, incidunt facilis impedit quae dolore fugit itaque omnis assumenda quibusdam placeat rerum illo?</p>
             <p>Aspernatur sequi, eligendi porro at perferendis adipisci alias excepturi iure eaque a minus nihil culpa iste dicta voluptatum, quae quos, itaque similique architecto corporis harum. Consequuntur voluptatem quibusdam ullam pariatur?</p>

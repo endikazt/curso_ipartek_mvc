@@ -1,16 +1,15 @@
  <div class="nav-wrapper">
 	 <nav> 
-		<a class="menuItem" href="index.jsp"> Home </a>   
-	    <a class="menuItem" href="ejercicios/jsp/pruebatecnica.jsp"> Prueba </a> 
-	    <a class="menuItem" href="ejercicios/jsp/animaciones.jsp"> Animaciones </a> 
-	    <a class="menuItem" href="ejercicios/jsp/cssespecify.jsp"> CSS Especificidad </a> 
-	    <a class="menuItem" href="ejercicios/jsp/cssbasico.jsp"> CSS Selectores basicos </a> 
-	    <a class="menuItem" href="ejercicios/jsp/cssavanzado.jsp"> CSS Selectores Avanzados </a>
-	    <a class="menuItem" href="ejercicios/jsp/visualizacion.jsp"> Visualizacion </a>  
-	    <a class="menuItem" href="ejercicios/jsp/posicionamiento.jsp"> Posicionamiento </a>  
-	    <a class="menuItem" href="ejercicios/jsp/game.jsp"> Arkanoid </a>  
-	    <a class="menuItem" href="ejercicios/jsp/formulario.jsp"> Formulario </a>      
-	    <a class="menuItem" href="ejercicios/jsp/login.jsp"> Login </a>     
-	    <a class="menuItem" href="ejercicios/jsp/flexbox.jsp"> FlexBox </a>      
+		<div class="nav-item"><a href="index.jsp"> Home </a> </div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/pruebatecnica.jsp"> Prueba </a> </div> 
+	   
+	    <div class="nav-item"><a href="ejercicios/jsp/visualizacion.jsp"> Visualizacion </a></div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/posicionamiento.jsp"> Posicionamiento </a></div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/game.jsp"> Arkanoid </a></div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/formulario.jsp"> Formulario </a></div>    
+	    <div class="nav-item"><a href="ejercicios/jsp/login.jsp"> Login </a></div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/flexbox.jsp"> FlexBox </a></div> 
+	    <div class="nav-item"><a href="ejercicios/jsp/datatable.jsp"> Datatable </a></div> 
+	    <div class="nav-item"><a href="ejercicios/howtos/top-nav-responsive.jsp"> Nav Responsive </a></div> 
 	</nav>
 </div>
