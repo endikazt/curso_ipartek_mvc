@@ -1,3 +1,4 @@
+ 		<div class="footer-wrapper">
  		<footer>
 		      <!-- javascript --> 
 		        
@@ -6,5 +7,6 @@
 		      <p> Ipartek Web Page &copy; <a href=""> Top </a>  </p>
             
         </footer>
+       	</div>
     </body>
 </html>

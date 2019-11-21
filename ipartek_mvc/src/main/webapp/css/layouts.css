@@ -1,0 +1,41 @@
+body
+{
+    margin: 0% !important;
+    padding: 0% !important;
+}
+
+main
+{
+    padding-bottom: 50%;
+    max-width: 1024px;
+    margin: auto;
+}
+
+.footer-wrapper
+{
+	background-color: #4b0082c7;
+	position: fixed;
+    padding: 10px;
+    bottom: 0%;
+    width: 100%;
+}
+
+footer
+{
+    max-width: 1024px;
+    margin: auto;
+}
+
+.nav-wrapper
+{
+	background-color: teal;
+	padding: 1em;
+    position: sticky;
+    top: 0%;
+}
+
+nav
+{   
+    margin: auto;
+    max-width: 1024px;
+}
