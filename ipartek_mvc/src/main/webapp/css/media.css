@@ -1,0 +1,17 @@
+@media screen and (max-width: 768px) and (min-width: 425px)
+{
+	.boton-top
+	{
+		display: none;
+	}
+}
+	
+/*mobil*/
+		
+@media screen and (max-width: 426px)
+{
+	.boton-top
+	{
+		display: inline;
+	}
+}

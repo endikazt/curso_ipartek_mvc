@@ -8,10 +8,10 @@
 {
     background-image: url('/helloweb/images/office.jpg');
 
-    padding: 1%;
+    padding-top: 1%;
 
     /* Set a specific height */
-    min-height: 400px; 
+    min-height: 350px; 
 
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
@@ -22,17 +22,8 @@
 
 .parallax h1
 {
-    padding-top: 1em;
     color: teal;
-    font-family: monospace;
-}
-
-.parallax h2
-{
-    padding-top: 0.25em;
-    color: teal;
-    font-family: monospace;
-    font-size: x-large;
+    font-family: 'Fira Mono', monospace;
 }
 
 .box
@@ -61,6 +52,15 @@
 .tabla
 {
 	width:100%;
+}
+
+.boton-top
+{
+	max-width: 1024px;
+	margin: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-end;
 }
 
 /*------------------------------ CLASES DEL TOP-NAV ----------------------------------*/

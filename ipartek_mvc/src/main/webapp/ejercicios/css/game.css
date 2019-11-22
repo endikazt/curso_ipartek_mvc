@@ -20,7 +20,7 @@ a
 
 body
 {
-    background-image: url(/images/fondogame.gif);
+    background-image: url('/helloweb/images/fondogame.gif');
 }
 
 h1
@@ -39,6 +39,6 @@ canvas
     border: 1px solid black;
     display: block;
     margin: auto;
-    background-image: url(/images/290061-P6O4SC-288.jpg);
+    background-image: url('/helloweb/images/290061-P6O4SC-288.jpg');
     margin-bottom: 10%;
 }

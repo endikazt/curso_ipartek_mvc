@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <base href="/helloweb/">
 
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 
     <style>
 
@@ -59,24 +61,13 @@
             height: 100px;
             border: 2px solid black;
         }
-
-
-
     
     </style>
-    <title>Visualización</title>
+    <title>Visualizacion</title>
 </head>
 <body>
 
-    <nav class="menuInicial"> 
-        <a class="menuItem" href="index.html"> Home </a>   
-        <a class="menuItem" href="/ejercicios/html/pruebatecnica.html"> Prueba </a> 
-        <a class="menuItem" href="/ejercicios/html/animaciones.html"> Animaciones </a> 
-        <a class="menuItem" href="/ejercicios/html/cssespecify.html"> CSS Especificidad </a> 
-        <a class="menuItem" href="/ejercicios/html/cssbasico.html"> CSS Selectores basicos </a> 
-        <a class="menuItem" href="/ejercicios/html/cssavanzado.html"> CSS Selectores Avanzados </a>
-        <a class="menuItem" href="/ejercicios/html/box-model.html"> Box model </a>  
-    </nav>
+    <%@include file="/includes/top-nav.jsp" %>
 
     <h1> Visualizacion </h1>
     <p class="prueba"> Toda etiqueta de HTML tiene una estructura de caja </p>

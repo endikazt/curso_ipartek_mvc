@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
+    
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <link href="https://fonts.googleapis.com/css?family=Fira+Mono&display=swap" rel="stylesheet">
+        
         <title><%=titulo%></title>
 
         <!-- La base para contruir todas las rutas de la pagina -->
@@ -30,5 +35,7 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="images/icons/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		
     </head>
+    
     <body>

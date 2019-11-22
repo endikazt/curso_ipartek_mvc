@@ -4,19 +4,20 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <title>Prueba tecnica</title>
 
         <!-- La base para contruir todas las rutas de la pagina -->
 
         <base href="/helloweb/">
 
         <!-- estilos -->
-        <link rel="stylesheet" href="ejercicios/css/stylesPrueba.css">
+        
+         <link rel="stylesheet" href="css/styles.css">
+         <link rel="stylesheet" href="ejercicios/css/stylesPrueba.css">
 
     </head>
     <body>
-    
-    	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    	 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 	     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 	     <script>
@@ -29,7 +30,7 @@
 
         <!-- javascript --> 
         
-        <script src="/ejercicios/js/mainPrueba.js">  </script>
+        <script src="/helloweb/ejercicios/js/mainPrueba.js">  </script>
 
         <!-- Forma abreviada de crear tablas table.item-style>tr*9>td*2  -->
 
@@ -40,6 +41,10 @@
             <h2> Welcome to HTML </h2>
    
         </div>
+        
+         <%@include file="/includes/top-nav.jsp" %>
+
+		<main>
 
         <h1> Prueba tecnica Ipartek 2019  </h1>
 
@@ -56,7 +61,13 @@
         </div>   
 
         <div style="height:750px;background-color:aliceblue;font-size:26px;margin:auto"> 
-        <table class="tabla display">
+        <table class="tabla display responsive">
+        <thead>
+        	<tr>
+        		<td colspan="2"> Integrantes del curso </td>
+        	</tr>
+        </thead>
+        <tbody>
             <tr>
                 <td> Aitor </td>
                 <td> Iker </td>
@@ -92,8 +103,14 @@
             <tr>
                 <td colspan="2"> Ander </td>
             </tr>
+        </tbody>
+        <tfoot>
+        	<td colspan="2"> Integrantes del curso </td>
+        </tfoot>
         </table>    
         
         </div>
+        
+        </main>
     </body>
 </html>

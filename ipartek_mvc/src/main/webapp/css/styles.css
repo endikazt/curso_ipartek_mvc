@@ -19,6 +19,7 @@
     5. layaouts (secciones de las paginas: head, footer, main, etc)
     6. ids (cosas mas especificas)
     7. font awesome
+    8. media queries
 
 
 */
@@ -30,7 +31,7 @@
 @import url("layouts.css");
 @import url("clases.css");
 @import url("custom.css");
-
+@import url("media.css");
 
 @import url("impresora.css") print; /* Para la vista a la hora de imprimir la pagina */
 

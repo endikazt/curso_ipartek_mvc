@@ -23,6 +23,7 @@
        <a href="ejercicios/jsp/posicionamiento.jsp"> Posicionamiento </a>
        <a href="ejercicios/jsp/flexbox.jsp"> FlexBox </a>
        <a href="ejercicios/jsp/datatable.jsp"> Datatable </a>
+       <a href="ejercicios/jsp/media-querys.jsp"> @media </a> 
     </div>
   </div>
   <div class="dropdown">

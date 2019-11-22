@@ -44,7 +44,7 @@ td:hover
 
 .parallax
 {
-    background-image: url("/images/office.jpg");
+    background-image: url('/helloweb/images/office.jpg');
 
     /* Set a specific height */
     min-height: 500px; 
@@ -56,8 +56,7 @@ td:hover
     background-size: cover;
 }
 
-.parallax h1
-{
+.parallax h1 {
     padding-top: 2em;
 }
 

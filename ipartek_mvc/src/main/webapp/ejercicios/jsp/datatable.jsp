@@ -1,7 +1,7 @@
 <% String titulo = "Datatables | Plugin datatables";%>
 
 <%@include file="/includes/header.jsp" %>
-<%@include file="/includes/nav.jsp" %>
+<%@include file="/includes/top-nav.jsp" %>
 <main>
 	<h1> Datatables </h1>
 	
