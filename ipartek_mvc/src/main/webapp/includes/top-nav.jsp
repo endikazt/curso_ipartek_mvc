@@ -41,6 +41,7 @@
     </button>
     <div class="dropdown-content">
      	<a href="ejercicios/jsp/conversor.jsp"> Conversor </a>
+     	<a href="ejercicios/jsp/controladores.jsp"> Controladores </a>
     </div>
   </div>
   <div class="dropdown">

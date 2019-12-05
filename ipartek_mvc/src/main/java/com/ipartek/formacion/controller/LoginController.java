@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginController
@@ -65,9 +66,17 @@ public class LoginController extends HttpServlet {
 		
 		if("admin".equals(user) && "admin".equals(passwd)) {
 			
+			// Recuperar session del usuario == browser
+			HttpSession session = request.getSession();
+			session.setAttribute("usuarioLogeado", "Administrador");
+			session.setAttribute("idioma", idioma);
+			session.setMaxInactiveInterval(5); // 5 seg
+			// session.setMaxInactiveInterval(-1); // nunca caduca
+			
+			
 			request.setAttribute("recuerdame", recuerdame);
 			request.setAttribute("mensaje", mensaje);			
-			request.getRequestDispatcher("login-ok.jsp").forward(request, response);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 			
 		} else {
 			

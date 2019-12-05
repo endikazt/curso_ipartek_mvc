@@ -98,7 +98,7 @@
 <%} %>
     <main>
         <h1> Login </h1>
-        <form action="login" method="post">
+        <form action="/helloweb/login" method="post">
             <fieldset>
                 <legend> Usuarios </legend>
                 <input type="text" name="nombre" id="contrasena" required>   

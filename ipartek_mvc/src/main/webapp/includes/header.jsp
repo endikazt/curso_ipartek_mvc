@@ -38,4 +38,28 @@
 		
     </head>
     
-    <body>
+    <body id="top">
+    
+    <section id="usuario">
+    	<%
+    		String usuario = (String) session.getAttribute("usuarioLogeado");
+    		String idioma = (String) session.getAttribute("idioma");
+    	
+    		if(usuario == null) {
+    			
+    	%>
+    	
+    		<p style="color:#F00;"> La sesion ha caducado. Va a la pagina de <a href="ejercicios/jsp/login.jsp">login</a> para iniciar sesion de nuevo.</p>
+    	
+    	<% 		
+    		} else {
+    	%>
+    	
+    		<p> Usuario = <%=usuario%></p>
+   			<p>Idioma = <%=idioma%></p>
+   			<a href="logout"> Cerrar sesion.</a>
+    	
+    	<%
+    		}
+    	%>
+    </section>
