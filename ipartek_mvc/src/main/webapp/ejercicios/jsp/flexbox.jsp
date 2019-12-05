@@ -1,7 +1,7 @@
 <% String titulo = "FlexBox";%>
 
 <%@include file="/includes/header.jsp" %>
-<%@include file="/includes/nav.jsp" %>
+<%@include file="/includes/top-nav.jsp" %>
 <main>
 	<h1> FlexBox </h1>
 	<section>

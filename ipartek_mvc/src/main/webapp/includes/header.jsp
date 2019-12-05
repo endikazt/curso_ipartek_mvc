@@ -15,7 +15,7 @@
 
         <base href="/helloweb/">
 
-        <!-- estilos -->
+        <!-- CSS Custom -->
         <link rel="stylesheet" href="css/styles.css?time=<%=System.currentTimeMillis()%>">
         
         <link rel="apple-touch-icon" sizes="57x57" href="images/icons/apple-icon-57x57.png">
@@ -42,10 +42,10 @@
     
     <section id="usuario">
     	<%
-    		String usuario = (String) session.getAttribute("usuarioLogeado");
+    		String user = (String) session.getAttribute("usuarioLogeado");
     		String idioma = (String) session.getAttribute("idioma");
     	
-    		if(usuario == null) {
+    		if(user == null) {
     			
     	%>
     	
@@ -55,7 +55,7 @@
     		} else {
     	%>
     	
-    		<p> Usuario = <%=usuario%></p>
+    		<p> Usuario = <%=user%></p>
    			<p>Idioma = <%=idioma%></p>
    			<a href="logout"> Cerrar sesion.</a>
     	
