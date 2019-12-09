@@ -44,6 +44,7 @@
 	     	<a href="ejercicios/jsp/conversor.jsp"> Conversor </a>
 	     	<a href="ejercicios/jsp/controladores.jsp"> Controladores </a>
 	     	<a href="perros"> CRUD Perros </a>
+	     	<a href="perros2"> CRUD Perros con JSTL</a>
 	    </div>
 	  </div>
 	  <div class="dropdown">
