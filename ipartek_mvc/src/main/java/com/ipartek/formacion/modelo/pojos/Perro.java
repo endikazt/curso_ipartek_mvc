@@ -2,26 +2,29 @@ package com.ipartek.formacion.modelo.pojos;
 
 public class Perro {
 	
-	private static int numTotalPerros = 1;
-	
 	private int id;
 	private String nombre;
 	private String foto;
 	
 	public Perro(int id, String nombre, String foto) {
 		super();
-		this.id = numTotalPerros;
+		this.id = id;
 		this.nombre = nombre;
 		this.foto = foto;
-		numTotalPerros++;
+	}
+	
+	public Perro(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.foto = "https://criptogaceta.com/wp-content/uploads/2018/02/doge-el-perro-criptomoneda.jpg";
 	}
 
 	public Perro() {
 		super();
-		this.id = numTotalPerros;
+		this.id = 0;
 		this.nombre = "";
 		this.foto = "https://criptogaceta.com/wp-content/uploads/2018/02/doge-el-perro-criptomoneda.jpg";
-		numTotalPerros++;
 	}
 	
 	public Perro(String nombre) {

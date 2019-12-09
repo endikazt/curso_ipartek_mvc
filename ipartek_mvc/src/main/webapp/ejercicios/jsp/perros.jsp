@@ -11,9 +11,13 @@
 	
 		ArrayList<Perro> perros = (ArrayList<Perro>) request.getAttribute("perros");
 	
+		String mensaje = (String) request.getAttribute("mensaje");
+	
 	%>
 
 	<h1> CRUD Perros </h1>
+	
+	<p style="color:teal"> <%=mensaje%></p>
 
 	<section>
 	
@@ -34,7 +38,10 @@
 							<td><%=p.getId()%></td>				
 							<td><%=p.getNombre()%> </td>				
 							<td><img alt="" style="height: 150px; width: 200px" src="<%=p.getFoto()%>"></td>	
-							<td><a href="/helloweb/perros?id=<%=p.getId()%>&eliminar=true"> Eliminar </a></td>			
+							<td>
+								<a href="/helloweb/perros?id=<%=p.getId()%>&adoptar=si"> Adoptar </a>
+								<a href="/helloweb/perros?id=<%=p.getId()%>&editar=si"> Modificar </a>
+							</td>			
 						</tr>
 					
 					<% } %>	
@@ -48,15 +55,22 @@
 	
 	<section>
 	
+		<%
+			Perro perroEditar = (Perro)request.getAttribute("perroEditar");
+			if ( perroEditar == null )
+			{
+				perroEditar = new Perro();
+			}
+		%>
+	
 		<h2> Formulario de perros </h2>
 		
 		<form action="/helloweb/perros" method="POST">
-		
-			
+			<input type="hidden" name="id" value="<%=perroEditar.getId()%>"> <br>
 			<label for="nombre"> Nombre del perro: </label>
-			<input type="text" name="nombre" placeholder="Nombre del perrete" required>	
+			<input type="text" name="nombre" placeholder="Nombre del perrete" value="<%=perroEditar.getNombre()%>" required> <br>	
 			<label for="foto"> Foto del perro: </label>
-			<input type="url" name="foto" placeholder="url (jpg, jpeg, png, etc)" required>
+			<input type="url" name="foto" placeholder="url (jpg, jpeg, png, etc)" value="<%=perroEditar.getFoto()%>" required> <br>
 	
 			<input type="submit" value="Añadir perro">
 		
