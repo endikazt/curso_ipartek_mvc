@@ -1,9 +1,5 @@
 <% String titulo = "CRUD Perros";%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <%@include file="/includes/header.jsp" %>
 <%@include file="/includes/top-nav.jsp" %>
 <main>

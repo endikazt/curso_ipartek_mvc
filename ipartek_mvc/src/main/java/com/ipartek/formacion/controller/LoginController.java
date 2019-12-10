@@ -1,6 +1,9 @@
 package com.ipartek.formacion.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class LoginController
  */
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final static Logger LOG = Logger.getLogger(LoginController.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -67,9 +73,12 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("usuarioLogeado", "Administrador");
 			session.setAttribute("idioma", idioma);
-			session.setMaxInactiveInterval(5); // 5 seg
+			session.setMaxInactiveInterval(60); // 5 seg
 			// session.setMaxInactiveInterval(-1); // nunca caduca
 			
+			// Recupera del ambito de session los usuarios y añadir el nuevo usuario
+			// ServletContext == application scope de la JSP
+			// ServletContext applicationScope = request.getServletContext();
 			
 			request.setAttribute("recuerdame", recuerdame);
 			request.setAttribute("mensaje", mensaje);			
