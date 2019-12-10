@@ -1,0 +1,40 @@
+
+/*
+*
+{
+    margin: 0%;
+    padding: 0%;
+}
+
+*/
+
+/*
+
+    Orden de un CSS
+
+    1. RESET
+    2. @keyframes (en caso de usarlos)
+    3. TODAS las etiquetas estilos generales
+    4. clases
+    5. layaouts (secciones de las paginas: head, footer, main, etc)
+    6. ids (cosas mas especificas)
+    7. font awesome
+    8. media queries
+
+
+*/
+
+@import url("reset.css");
+@import url("normalize.css");
+@import url("etiquetas.css");
+@import url("animaciones.css");
+@import url("layouts.css");
+@import url("clases.css");
+@import url("custom.css");
+@import url("media.css");
+
+@import url("impresora.css") print; /* Para la vista a la hora de imprimir la pagina */
+
+
+
+
