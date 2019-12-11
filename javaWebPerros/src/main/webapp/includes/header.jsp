@@ -16,8 +16,7 @@
         <title><%=titulo%></title>
 
         <!-- La base para contruir todas las rutas de la pagina -->
-
-        <base href="/perretes/">
+		<base href="${pageContext.request.contextPath}/">
 
         <!-- CSS Custom -->
         <link rel="stylesheet" href="css/styles.css?time=<%=System.currentTimeMillis()%>">
@@ -45,25 +44,14 @@
     <body id="top">
     
     <section id="usuario">
-    	<%
-    		String user = (String) session.getAttribute("usuarioLogeado");
-    		String idioma = (String) session.getAttribute("idioma");
-    	
-    		if(user == null) {
-    			
-    	%>
-    	
-    		<p style="color:#F00;"> La sesion ha caducado. Va a la pagina de <a href="index.jsp">login</a> para iniciar sesion de nuevo.</p>
-    	
-    	<% 		
-    		} else {
-    	%>
-    	
-    		<p> Usuario = <%=user%>, Idioma = <%=idioma%> <a href="/perretes/logout"> Cerrar sesion</a></p>
-    	
-    	<%
-    		}
-    	%>
-    	
-    	<p> Usuario conectados: ${applicationScope.numeroUsuariosConectados}</p>
+ 
+   		<c:choose>
+   			<c:when test="${not empty usuarioLogeado}">
+   				<p>Usuario: ${usuarioLogeado} <a href="logout"> Cerrar sesion</a></p>
+   				<p> Usuario conectados: ${applicationScope.numeroUsuariosConectados}</p>
+   			</c:when>
+   			<c:when test="${empty usuarioLogeado}">
+   				<p style="color:#F00;"> La sesion ha caducado. Va a la pagina de <a href="index.jsp">login</a> para iniciar sesion de nuevo.</p>
+   			</c:when>
+   		</c:choose>
     </section>

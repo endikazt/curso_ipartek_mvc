@@ -1,13 +1,21 @@
+<!--  Indicamos con una directiva que en caso de error tiene que ir a la pagina de error indicada -->
+<%@ page errorPage="error.jsp" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Login</title>
     
-    <base href="/perretes/">
+    <base href="${pageContext.request.contextPath}/">
 
     <link rel="stylesheet" href="css/styles.css">
 
@@ -91,15 +99,18 @@
     </style>
 </head>
 <body>
-<%
-	String mensaje = (String) request.getAttribute("mensaje");
-	if(mensaje != null){
-%>
-	<p style="color:red;"><%=mensaje%></p>
-<%} %>
+
+	<c:if test="${not empty param.mensaje}">
+		<p style="color:white; text-transform: capitalize;"> ${param.mensaje} :)</p>
+	</c:if>
+	
+	<!-- Codigo para forzar un error en la JSP -->
+	
+	<!-- %=mensajeeeee%> -->
+	
     <main>
         <h1> Login </h1>
-        <form action="/perretes/login" method="post">
+        <form action="login" method="post">
             <fieldset>
                 <legend> Usuarios </legend>
                 <input type="text" name="nombre" id="contrasena" required>   

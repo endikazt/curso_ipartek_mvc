@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 /**
  * Servlet implementation class BackOfficeController
  */
-@WebServlet("/home")
+@WebServlet( {"/private/home", "/private/home/"} )
 public class BackOfficeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(BackOfficeController.class);
@@ -21,18 +21,15 @@ public class BackOfficeController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-		LOG.info("Entrando en el servlet de backoffice");
-		
-		response.sendRedirect("private/index.jsp");
+		doPost(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		request.getRequestDispatcher("/private/index.jsp").forward(request, response);
 		
 	}
 

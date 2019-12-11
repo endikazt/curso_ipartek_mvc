@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 /**
  * Servlet implementation class LoginController
  */
-@WebServlet("/login")
+@WebServlet( {"/login", "/login/"} )
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(LoginController.class);
@@ -80,9 +80,12 @@ public class LoginController extends HttpServlet {
 			// ServletContext == application scope de la JSP
 			// ServletContext applicationScope = request.getServletContext();
 			
-			request.setAttribute("recuerdame", recuerdame);
-			request.setAttribute("mensaje", mensaje);			
-			request.getRequestDispatcher("/home").forward(request, response);
+			// request.setAttribute("recuerdame", recuerdame);
+			// request.setAttribute("mensaje", mensaje);	
+			
+			String base = request.getContextPath();
+			
+			response.sendRedirect(base + "/private/home");
 			
 		} else {
 			
