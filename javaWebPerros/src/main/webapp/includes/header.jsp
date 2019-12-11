@@ -54,4 +54,11 @@
    				<p style="color:#F00;"> La sesion ha caducado. Va a la pagina de <a href="index.jsp">login</a> para iniciar sesion de nuevo.</p>
    			</c:when>
    		</c:choose>
+   		<hr>
+   		<p> Contador de intentos: ${applicationScope.contadorIntentos} </p>	
+   		<ul>
+	   		<c:forEach items="${applicationScope.listaIps}" var="ip">
+	   			<li> ${item}</li>
+	   		</c:forEach>
+	   	</ul>
     </section>

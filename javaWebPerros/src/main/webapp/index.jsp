@@ -104,9 +104,13 @@
 		<p style="color:white; text-transform: capitalize;"> ${param.mensaje} :)</p>
 	</c:if>
 	
-	<!-- Codigo para forzar un error en la JSP -->
+	<!-- 
 	
-	<!-- %=mensajeeeee%> -->
+		Codigo para forzar un error en la JSP 
+	
+	 	%=mensajeeeee%> 
+	 
+	 -->
 	
     <main>
         <h1> Login </h1>

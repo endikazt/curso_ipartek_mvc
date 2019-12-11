@@ -1,5 +1,8 @@
 package com.ipartek.formacion.listeners;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -26,6 +29,11 @@ public class AppListener implements ServletContextListener {
     	// sc == applicationScope
     	ServletContext sc = sce.getServletContext();
     	sc.setAttribute("numeroUsuariosConectados", 0);
+    	sc.setAttribute("contadorIntentos", 0);
+    	
+    	Set<String> listaIps = new HashSet<String>();
+    	
+    	sc.setAttribute("listaIps", listaIps);
     	
     }
 	
