@@ -96,3 +96,15 @@ td {
 	padding: 1em
 	
 }
+
+form input {
+	
+	margin-bottom: 1em;
+	
+}
+
+form input[type="checkbox"] {
+	
+	margin-left: 1em;
+	
+}

@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.ServletSecurityElement;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,8 +40,19 @@ import com.ipartek.formacion.controller.BackOfficeController;
 public class SeguridadFilter implements Filter {
 	
 	private final static Logger LOG = Logger.getLogger(SeguridadFilter.class);
-	private int contadorIntentos = 0;
-	private Set<String> listaIps = new HashSet<String>();
+	
+	
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+		
+		ServletContext sc = fConfig.getServletContext();
+		
+		sc.setAttribute("numeroAccesosIndebidos", 0);
+		sc.setAttribute("listaIps", new HashSet<String>());
+		
+	}
 	
 	/**
 	 * @see Filter#destroy()
@@ -64,8 +76,6 @@ public class SeguridadFilter implements Filter {
 		LOG.debug("Remote Host" + req.getRemoteHost());
 		LOG.debug("Navegador" + req.getHeader("User-Agent"));
 		
-		
-		
 //		Map<String, String[]> map = req.getParameterMap();
 //
 //		for (String key: map.keySet())
@@ -81,34 +91,26 @@ public class SeguridadFilter implements Filter {
 		
 		ServletContext sc = req.getServletContext();
 		
+		int numeroAccesosIndebidos = (int) sc.getAttribute("numeroAccesosIndebidos");
+		
+		HashSet<String> listaIps = (HashSet<String>) sc.getAttribute("listaIps");
+		
 		HttpSession session = req.getSession();
 		
 		if(session.getAttribute("usuarioLogeado") == null) 
 		{
 			LOG.warn("Intentan entrar si logearse");
-			contadorIntentos++;
+			
 			listaIps.add(req.getRemoteAddr());
-			LOG.debug("Contador Intentos -> " + contadorIntentos);
-			LOG.debug("IP -> " + listaIps.toString());
+			sc.setAttribute("numeroAccesosIndebidos", ++numeroAccesosIndebidos);
+			sc.setAttribute("listaIps", listaIps);
 			
 		} else 
 		{
-			sc.setAttribute("contadorIntentos", contadorIntentos);
-			sc.setAttribute("listaIps", listaIps);
-			
 			// dejamos continuar
 			// pass the request along the filter chain
 			chain.doFilter(request, response);		
 		}
 		
 	}
-
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-		
-		
-	}
-
 }

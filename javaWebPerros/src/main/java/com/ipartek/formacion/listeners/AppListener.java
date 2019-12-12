@@ -1,5 +1,6 @@
 package com.ipartek.formacion.listeners;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,11 +30,16 @@ public class AppListener implements ServletContextListener {
     	// sc == applicationScope
     	ServletContext sc = sce.getServletContext();
     	sc.setAttribute("numeroUsuariosConectados", 0);
-    	sc.setAttribute("contadorIntentos", 0);
     	
     	Set<String> listaIps = new HashSet<String>();
     	
     	sc.setAttribute("listaIps", listaIps);
+    	
+    	HashMap<String,String> hmSexo = new HashMap<String, String>();
+    	hmSexo.put("H", "Hombre");
+    	hmSexo.put("M", "Mujer");
+    	hmSexo.put("I", "Indefinido");
+    	sc.setAttribute("hmSexo", hmSexo);
     	
     }
 	

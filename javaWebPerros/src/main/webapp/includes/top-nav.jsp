@@ -6,8 +6,9 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	     	<a href="perros"> CRUD Perros </a>
-	     	<a href="perros2"> CRUD Perros con JSTL</a>
+	     	<a href="private/perros"> CRUD Perros </a>
+	     	<a href="private/perros2"> CRUD Perros con JSTL</a>
+	     	<a href="private/formulario.jsp"> Formulario Servlet</a>
 	    </div>
 	  </div>
 	  <a class="icon" onclick="myFunction()">&#9776;</a>

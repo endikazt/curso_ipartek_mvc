@@ -1,6 +1,6 @@
 <% String titulo = "CRUD Perros";%>
 
-<%@page import="com.ipartek.formacion.modelo.pojos.Perro"%>
+<%@page import="com.ipartek.formacion.model.pojo.Perro"%>
 <%@page import="java.util.ArrayList"%>
 
 <%@include file="/includes/header.jsp" %>

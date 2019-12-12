@@ -73,7 +73,7 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("usuarioLogeado", "Administrador");
 			session.setAttribute("idioma", idioma);
-			session.setMaxInactiveInterval(60); // 5 seg
+			session.setMaxInactiveInterval(-1); // 5 seg
 			// session.setMaxInactiveInterval(-1); // nunca caduca
 			
 			// Recupera del ambito de session los usuarios y añadir el nuevo usuario

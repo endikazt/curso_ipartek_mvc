@@ -8,7 +8,8 @@
      </div>
         
 <%@include file="/includes/top-nav.jsp" %>
-     	
+
+<main>
 	     <!-- Forma abreviada de crear tablas table.item-style>tr*9>td*2  -->
 	
 	    <h1> Index </h1>
@@ -22,6 +23,8 @@
 	    <p>Hic voluptate soluta mollitia, explicabo temporibus aut veniam fugiat esse pariatur nihil eaque eius. Veritatis vel nobis accusantium excepturi impedit, mollitia cumque ea ex, laboriosam vitae unde asperiores consequatur minima.</p>
 	
 	    <hr>
+	    
+</main>
         
 <%@include file="/includes/footer.jsp" %>
        
