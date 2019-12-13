@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.ipartek.formacion.modelo.pojos.Perro;
+import com.ipartek.formacion.model.PerroDAO;
+import com.ipartek.formacion.model.pojo.Perro;
 
 /**
  * Servlet implementation class PerroController
@@ -23,20 +24,26 @@ public class PerroController2 extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(PerroController2.class);
+	private static PerroDAO dao = PerroDAO.getInstance();
 	private String mensaje;
 	private int indice = 0;
 	
-    private ArrayList<Perro> perros = new ArrayList<Perro>();
+    private ArrayList<Perro> perros = dao.getAll();
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		LOG.trace("Se ejecuta la primera vez qu ese llama a este servlet y nunca mas");
 		super.init(config);
-		perros.add( new Perro(1,"bubba") );
-		perros.add( new Perro(2, "rataplan") );
-		perros.add( new Perro(3, "mosca") );
-		perros.add( new Perro(4, "txakur") );
-		perros.add( new Perro(5, "lagun") );
+		try {
+			dao.create( new Perro(1,"bubba") );
+			dao.create( new Perro(2, "rataplan") );
+			dao.create( new Perro(3, "mosca") );
+			dao.create( new Perro(4, "txakur") );
+			dao.create( new Perro(5, "lagun") );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		indice = 6;
 	}
 	
@@ -60,7 +67,7 @@ public class PerroController2 extends HttpServlet {
 		LOG.trace("Listar perros");
 		request.setAttribute("perros", perros);
 		request.setAttribute("mensaje", mensaje);
-		request.getRequestDispatcher("ejercicios/jsp/perros-jstl.jsp").forward(request, response);
+		request.getRequestDispatcher("/private/perros-jstl.jsp").forward(request, response);
 	}
 
 	/**
@@ -76,24 +83,29 @@ public class PerroController2 extends HttpServlet {
 		
 		if(id > 0) 
 		{
-			Perro perro = null;
-			for(int i = 0; i < perros.size(); i++)
-			{
-				if(id == (perros.get(i).getId()))
-				{
-					perro = perros.get(i);
-				}
-			}
+			Perro perro = dao.getById(id);
 			
 			if(adoptar == true ) {
 			
-				perros.remove(perro);
+				try {
+					dao.delete(perro.getId());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				LOG.info("El perro " + perro.toString() + " se ha adoptado");
 				mensaje = "Perro adoptado";
 				
 			}
 			
 			if(editar == true ) {
+				
+				try {
+					dao.update(id, perro);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				request.setAttribute("perroEditar", perro);
 				
@@ -120,20 +132,15 @@ public class PerroController2 extends HttpServlet {
 		
 		if(id > 0) 
 		{
-			Perro perro = null;
-			for(int i = 0; i < perros.size(); i++)
-			{
-				if(id == (perros.get(i).getId()))
-				{
-					perro = perros.get(i);
-					perros.get(i).setNombre(nombre);
-					perros.get(i).setFoto(foto);
-				}
+			Perro perro;
+			try {
+				perro = dao.delete(id);
+				LOG.info("El perro " + perro.toString() + " se ha adoptado");			
+				mensaje = "Perro modificado correctamente";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			LOG.info("El perro " + perro.toString() + " se ha adoptado");			
-			mensaje = "Perro modificado correctamente";
-			
 			
 		} 
 		else 
@@ -147,11 +154,14 @@ public class PerroController2 extends HttpServlet {
 			p.setFoto(foto);
 			indice++;
 			
-			mensaje = "Gracias por dar de alta un nuevo perro";
+			try {
+				dao.create(p);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			//guardar en lista
-			perros.add(p);
-		
+			mensaje = "Gracias por dar de alta un nuevo perro";
 		}
 	
 	}
