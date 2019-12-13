@@ -34,11 +34,21 @@
 	                <input type="checkbox" name="deportes" value="Escalada" ${deportesFormulario.stream().anyMatch(v->v == 'Escalada').get() ? 'checked' : ''}> Escalada <br>
 	             	<label for="sexo">Sexo</label><br>
 	             	<select name="sexo">
-	             	<!-- Metodo con Hashmap y enviar de vuelta datos en caso de error -->
-	             	<c:forEach items="${applicationScope.hmSexo}" var="sexo">	
-						<option value="${sexo.key}" ${sexoFormulario == sexo.key ? 'checked' : ''}> ${sexo.value} </option><br>
-					</c:forEach>
-					</select>
+	             	<!-- 
+	             	
+		             	Metodo con Hashmap y enviar de vuelta datos en caso de error 
+		             	<c:forEach items="${applicationScope.hmSexo}" var="sexos">	
+							<option value="${sexos.key}" ${sexoFormulario eq sexos.key ? 'checked' : ''}> ${sexos.value} </option><br>
+						</c:forEach>
+					
+					-->
+					
+						<option value="H" ${(sexoFormulario eq "H") ? "checked" : ""}> Hombre </option>
+						<option value="M" ${(sexoFormulario eq "M") ? "checked" : ""}> Mujer </option>
+						<option value="I" ${(sexoFormulario eq "I") ? "checked" : ""}> Indefinido </option>
+						
+						
+					</select>				
 	                <input type="submit" value="Enviar">
 	       </fieldset>  
 	    </form>

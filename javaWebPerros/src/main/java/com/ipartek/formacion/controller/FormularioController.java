@@ -34,11 +34,7 @@ public class FormularioController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		LOG.debug("Recibiendo peticion");
-		
-		String base = request.getContextPath();
-		
-		LOG.debug(base);
-		
+
 		String nombre = request.getParameter("nombre");
 		String email = request.getParameter("email");
 		String[] deportes = request.getParameterValues("deportes");
@@ -46,33 +42,40 @@ public class FormularioController extends HttpServlet {
 		
 		LOG.debug("sexo => " + sexo);
 		
-		if(!"".equals(nombre) && !"".equals(email) && deportes.length >= 3)
+		try 
 		{
-		
-		List<String> listaDeportes = new ArrayList<String>();
-		listaDeportes = Arrays.asList(deportes);
-		
-		request.setAttribute("mensaje", "Alta completada correctamente :)");
-		request.setAttribute("nombreFormulario", nombre);
-		request.setAttribute("emailFormulario", email);
-		request.setAttribute("deportesFormulario", listaDeportes);
-		
-		LOG.debug("Empezando a enviar la peticion");
-		
-		request.getRequestDispatcher("/private/formulario-ok.jsp").forward(request, response);
-		
-		} else
-		{	
+			
+			if((!"".equals(nombre) && nombre != null) && (!"".equals(email) && email !=null) && deportes.length >= 3)
+			{
 			
 			List<String> listaDeportes = new ArrayList<String>();
 			listaDeportes = Arrays.asList(deportes);
 			
+			request.setAttribute("mensaje", "Alta completada correctamente :)");
 			request.setAttribute("nombreFormulario", nombre);
 			request.setAttribute("emailFormulario", email);
 			request.setAttribute("deportesFormulario", listaDeportes);
-			request.setAttribute("sexoFormulario", sexo);
-			request.setAttribute("mensaje", "Error al realizar el alta. Has debido introducir mal algun campo :(");
-			request.getRequestDispatcher("/private/formulario.jsp").forward(request, response);
+			
+			LOG.debug("Empezando a enviar la peticion");
+			
+			request.getRequestDispatcher("/private/formulario-ok.jsp").forward(request, response);
+			
+			} else
+			{	
+				
+				List<String> listaDeportes = new ArrayList<String>();
+				listaDeportes = Arrays.asList(deportes);
+				
+				request.setAttribute("nombreFormulario", nombre);
+				request.setAttribute("emailFormulario", email);
+				request.setAttribute("deportesFormulario", listaDeportes);
+				request.setAttribute("sexoFormulario", sexo);
+				request.setAttribute("mensaje", "Error al realizar el alta. Has debido introducir mal algun campo :(");
+				request.getRequestDispatcher("/private/formulario.jsp").forward(request, response);
+			}
+			
+		} catch (Exception e) {
+			LOG.error(e);
 		}
 	}
 
