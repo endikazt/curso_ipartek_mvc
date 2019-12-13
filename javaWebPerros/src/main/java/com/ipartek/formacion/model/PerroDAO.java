@@ -84,9 +84,9 @@ public class PerroDAO  implements IDAO<Perro>{
 		{
 			if (id == registros.get(i).getId())
 			{
-				registros.remove(pojo);
-				registros.add((Perro) pojo);
-				resul = (Perro) pojo;
+				registros.get(i).setNombre(pojo.getNombre());;
+				registros.get(i).setFoto(pojo.getFoto());;
+				resul = pojo;
 			}
 		}
 		
@@ -100,7 +100,7 @@ public class PerroDAO  implements IDAO<Perro>{
 
 		if(pojo != null)
 		{
-			
+			pojo.setId(indice++);
 			registros.add(pojo);
 			resul = pojo;
 		

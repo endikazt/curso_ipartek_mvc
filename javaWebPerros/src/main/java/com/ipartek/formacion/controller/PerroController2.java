@@ -18,7 +18,7 @@ import com.ipartek.formacion.model.pojo.Perro;
 /**
  * Servlet implementation class PerroController
  */
-@WebServlet("/perros2")
+@WebServlet({"/private/perros2","/private/perros2/"})
 public class PerroController2 extends HttpServlet {
 	
 	
@@ -27,8 +27,6 @@ public class PerroController2 extends HttpServlet {
 	private static PerroDAO dao = PerroDAO.getInstance();
 	private String mensaje;
 	private int indice = 0;
-	
-    private ArrayList<Perro> perros = dao.getAll();
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -51,7 +49,6 @@ public class PerroController2 extends HttpServlet {
 	public void destroy() {
 		LOG.trace("Se ejecuta solo una vez cuando se detiene el servidor");
 		super.destroy();
-		perros = null;
 	}
 	
 	@Override
@@ -65,7 +62,7 @@ public class PerroController2 extends HttpServlet {
 		LOG.trace("Se ejecuta despues del soGet y del doPost");
 		
 		LOG.trace("Listar perros");
-		request.setAttribute("perros", perros);
+		request.setAttribute("perros", dao.getAll());
 		request.setAttribute("mensaje", mensaje);
 		request.getRequestDispatcher("/private/perros-jstl.jsp").forward(request, response);
 	}

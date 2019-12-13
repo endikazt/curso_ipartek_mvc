@@ -39,8 +39,8 @@
 							<td><%=p.getNombre()%> </td>				
 							<td><img alt="" style="height: 150px; width: 200px" src="<%=p.getFoto()%>"></td>	
 							<td>
-								<a href="/helloweb/perros?id=<%=p.getId()%>&adoptar=si"> Adoptar </a>
-								<a href="/helloweb/perros?id=<%=p.getId()%>&editar=si"> Modificar </a>
+								<a href="/perretes/private/perros?id=<%=p.getId()%>&adoptar=si"> Adoptar </a>
+								<a href="/perretes/private/perros?id=<%=p.getId()%>&editar=si"> Modificar </a>
 							</td>			
 						</tr>
 					
@@ -65,7 +65,7 @@
 	
 		<h2> Formulario de perros </h2>
 		
-		<form action="/helloweb/perros" method="POST">
+		<form action="/perretes/private/perros" method="POST">
 			<input type="hidden" name="id" value="<%=perroEditar.getId()%>"> <br>
 			<label for="nombre"> Nombre del perro: </label>
 			<input type="text" name="nombre" placeholder="Nombre del perrete" value="<%=perroEditar.getNombre()%>" required> <br>	

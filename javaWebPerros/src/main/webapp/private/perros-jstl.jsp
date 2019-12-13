@@ -35,8 +35,8 @@
 							<td>${p.nombre} </td>				
 							<td><img alt="" style="height: 150px; width: 200px" src="${p.foto}"></td>	
 							<td>
-								<a href="/helloweb/perros?id=${p.id}&adoptar=si"> Adoptar </a>
-								<a href="/helloweb/perros?id=${p.id}&editar=si"> Modificar </a>
+								<a href="/perretes/private/perros2?id=${p.id}&adoptar=si"> Adoptar </a>
+								<a href="/perretes/private/perros2?id=${p.id}&editar=si"> Modificar </a>
 							</td>			
 						</tr>	
 					</c:forEach>
@@ -54,7 +54,7 @@
 	
 		<h2> Formulario de perros </h2>
 		
-		<form action="/helloweb/perros2" method="POST">
+		<form action="/perretes/private/perros2" method="POST">
 			<input type="hidden" name="id" value="${perroEditar.id}"> <br>
 			<label for="nombre"> Nombre del perro: </label>
 			<input type="text" name="nombre" placeholder="Nombre del perrete" value="${perroEditar.nombre}" required> <br>	
