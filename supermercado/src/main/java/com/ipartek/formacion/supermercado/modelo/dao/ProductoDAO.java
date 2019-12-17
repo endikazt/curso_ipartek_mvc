@@ -51,25 +51,73 @@ public class ProductoDAO implements IDAO<Producto>{
 	@Override
 	public Producto getById(int id) throws Exception {
 		
-		return null;
+		Producto resul = null;
+		
+		for(int i = 0; i < registros.size(); i++) {
+			
+			if(id == registros.get(i).getId())
+			{
+				resul = registros.get(i);
+			}
+			
+		}
+		
+		return resul;
 	}
 
 	@Override
 	public Producto delete(int id) throws Exception {
 		
-		return null;
+		Producto resul = null;
+		
+		for(int i = 0; i < registros.size(); i++) {
+			
+			if(id == registros.get(i).getId())
+			{
+				resul = registros.get(i);
+				registros.remove(i);
+			}
+			
+		}
+		
+		return resul;
 	}
 
 	@Override
 	public Producto update(int id, Producto pojo) throws Exception {
 		
-		return null;
+		Producto resul = null;
+		
+		for(int i = 0; i < registros.size(); i++) {
+			
+			if(id == registros.get(i).getId())
+			{
+				registros.get(i).setNombre(pojo.getNombre());
+				registros.get(i).setDescripcion(pojo.getDescripcion());
+				registros.get(i).setPrecio(pojo.getPrecio());
+				registros.get(i).setDescuento(pojo.getDescuento());
+				registros.get(i).setImagen(pojo.getImagen());
+				resul = registros.get(i);
+				break;
+			}
+			
+		}
+		
+		return resul;
 	}
 
 	@Override
 	public Producto create(Producto pojo) throws Exception {
 		
-		return null;
+		Producto resul = null;
+		
+		pojo.setId(indice);
+		indice++;
+		
+		registros.add(pojo);
+		resul = pojo;
+		
+		return resul;
 	}
 
 }

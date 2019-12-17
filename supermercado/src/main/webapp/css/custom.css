@@ -22,6 +22,27 @@ main{
     }    
 
  }
+ 
+
+/* ------------------------- ETIQUETAS ---------------------------- */
+
+.table th, .table td {
+	
+	text-align: center;
+	vertical-align: middle;
+	
+}
+
+
+td img {
+	
+	height: 150px;
+	width: auto;
+	
+}
+
+
+/* --------------------- CLASES ------------------ */
 
 
 /* contenedor-productos
@@ -34,7 +55,9 @@ main{
     width: 100%;
 }
 
-
+.contenedor-productos .col {
+    flex-grow: 0;
+}
 
 @media (min-width: 576px) { 
 
@@ -43,8 +66,6 @@ main{
     }    
 
  }
-
-
 
 /* producto
 *******************************************/

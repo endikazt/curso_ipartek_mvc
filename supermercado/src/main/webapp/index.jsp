@@ -1,10 +1,10 @@
-<%@ include file="includes/header.jsp" %>
+<%@ include file="/includes/header.jsp" %>
 
         <div class="row contenedor-productos">
         
         <c:forEach items="${productos}" var="producto">
         
-        	<div class="col">
+        	<div class="col mb-4">
 
                 <!-- producto -->
                 <div class="producto">
@@ -14,13 +14,13 @@
                     <div class="body">
                         <p>
                             <span class="precio-descuento">
-                            	<fmt:formatNumber minFractionDigits="2" type="currency" currencySymbol="€" value="${producto.precio}" />
+                            	<fmt:formatNumber minFractionDigits="2" type="currency" value="${producto.precio}" />
                             </span>
                             <span class="precio-original">
-                            	<fmt:formatNumber minFractionDigits="2" type="currency" currencySymbol="€" value="${producto.calcularPrecioDescuento()}" />
+                            	<fmt:formatNumber minFractionDigits="2" type="currency" value="${producto.calcularPrecioDescuento()}" />
                             </span>
                         </p>
-                        <p class="text-muted precio-unidad">($<fmt:formatNumber minFractionDigits="2" type="currency" currencySymbol="€" value="${producto.precio}" /> / litro)</p>
+                        <p class="text-muted precio-unidad">($<fmt:formatNumber minFractionDigits="2" type="currency" value="${producto.precio}" /> / litro)</p>
                         <p class="nombre">${producto.nombre}</p>
                         <p class="descripcion text-truncate">${producto.descripcion}</p>
                     </div>
@@ -41,4 +41,4 @@
         </c:forEach>
         
         </div>
-<%@ include file="includes/footer.jsp"%>
+<%@ include file="/includes/footer.jsp"%>

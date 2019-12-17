@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <!doctype html>
 <html lang="en">
@@ -32,7 +33,7 @@
         <div class="row justify-content-center">
             <div class="col-6">
 
-                    <form action="URL_CONTROLADOR" method="post">
+                    <form action="seguridad/productos?accion=guardar" method="post">
 
                         <div class="form-group">
                             <label for="nombre">Producto</label>
@@ -40,7 +41,7 @@
                                    class="form-control" 
                                    id="nombre" 
                                    required
-                                   placeholder="Mínimo 2 Máximo 150"
+                                   placeholder="MÃ­nimo 2 MÃ¡ximo 150"
                                    pattern=".{2,150}"
                                    aria-describedby="nombreHelp">
                             <small id="nombreHelp" class="form-text text-muted">Nombre y descripcion del producto</small>
@@ -53,7 +54,7 @@
                                        class="form-control" 
                                        id="precio" 
                                        required
-                                       placeholder="0,00€"
+                                       placeholder="0,00â¬"
                                        pattern=".{2,150}"
                                        aria-describedby="precioHelp">
                                 <small id="precioHelp" class="form-text text-muted">Precio en euros sin Iva, ni descuento</small>
