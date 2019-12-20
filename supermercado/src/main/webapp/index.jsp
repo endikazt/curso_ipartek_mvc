@@ -31,7 +31,7 @@
                         <button class="plus">+</button>
                     </div>
 
-                    <button class="carro">Añadir al carro</button>
+                    <button class="carro">Anadir al carro</button>
 
                 </div>
                 <!-- /.producto -->

@@ -54,12 +54,16 @@ public class SeguridadFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
+		/*
+		 * 
 		LOG.debug("RequestURL " + req.getRequestURL());
 		LOG.debug("RequestURI " + req.getRequestURI());
 		LOG.debug("HTTP Protocol " + req.getProtocol());
 		LOG.debug("Remote Address" + req.getRemoteAddr());
 		LOG.debug("Remote Host" + req.getRemoteHost());
 		LOG.debug("Navegador" + req.getHeader("User-Agent"));
+		
+		*/
 		
 //		Map<String, String[]> map = req.getParameterMap();
 //
