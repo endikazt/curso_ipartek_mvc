@@ -1,0 +1,69 @@
+
+nav, footer, .footer-wrapper{
+    background-color: #DDD;
+    min-height: 10vh;
+}
+
+
+
+main{
+    min-height: 80vh;
+}
+
+#btn-top{
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+@media (min-width: 576px) { 
+
+    #btn-top{
+        display: none;
+    }    
+
+ }
+ 
+
+/* ------------------------- ETIQUETAS ---------------------------- */
+
+.table th, .table td {
+	
+	text-align: center;
+	vertical-align: middle;
+	
+}
+
+
+td img {
+	
+	height: 150px;
+	width: auto;
+	
+}
+
+
+/* --------------------- CLASES ------------------ */
+
+
+/* contenedor-productos
+**********************************************/
+.contenedor-productos{
+    margin: 2rem 0;
+}
+
+.contenedor-productos > div {
+    width: 100%;
+}
+
+.contenedor-productos .col {
+    flex-grow: 0;
+}
+
+@media (min-width: 576px) { 
+
+    .contenedor-productos > div {
+        width: 20%;
+    }    
+
+}
