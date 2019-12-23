@@ -13,13 +13,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="Ander Uraga">
+    <meta name="author" content="Endika Zuazo">
     <title>Supermercado</title>
     
     <base href="${pageContext.request.contextPath}/">
 
    <!-- Bootstrap core CSS -->
    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   
+   <!-- Datatble CSS -->
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"/>
 
    <!-- nuestro css -->
    <link rel="stylesheet" href="css/custom.css">

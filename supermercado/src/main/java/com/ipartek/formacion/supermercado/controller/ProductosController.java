@@ -1,6 +1,7 @@
 package com.ipartek.formacion.supermercado.controller;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,6 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
@@ -19,206 +26,236 @@ import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 @WebServlet("/seguridad/productos")
 public class ProductosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final static Logger LOG = Logger.getLogger(ProductosController.class);
 	private static final String VIEW_TABLA = "productos/index.jsp";
 	private static final String VIEW_FORM = "productos/formulario.jsp";
 	private static String vistaSeleccionda = VIEW_TABLA;
 	private static ProductoDAO dao;
-	
-	//Acciones
-	
+
+	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	Validator validator = factory.getValidator();
+
+	// Acciones
+
 	private static final String ACCION_LISTAR = "listar";
 	private static final String ACCION_FORMULARIO = "formulario";
 	private static final String ACCION_GUARDAR = "guardar"; // Crear y modificar
 	private static final String ACCION_ELIMINAR = "eliminar";
-	
-	@Override
-		public void init(ServletConfig config) throws ServletException {
-			super.init(config);
-			
-			dao = ProductoDAO.getIntance();
-		}
-	
-	@Override
-		public void destroy() {
-			super.destroy();
-			
-			dao = null;
-		}
-	
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doAction(request,response);
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+
+		dao = ProductoDAO.getIntance();
+		factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doAction(request,response);
+		dao = null;
+		factory = null;
+		validator = null;
 	}
-	
-	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// Recoger parametros
-		
-		String pAccion = request.getParameter("accion");		
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doAction(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doAction(request, response);
+	}
+
+	private void doAction(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String pAccion = request.getParameter("accion");
+
 		try {
-			
+
 			switch (pAccion) {
 			case ACCION_LISTAR:
 				listar(request, response);
 				break;
-			case ACCION_ELIMINAR:	
+			case ACCION_ELIMINAR:
 				eliminar(request, response);
 				break;
-			case ACCION_GUARDAR:	
+			case ACCION_GUARDAR:
 				guardar(request, response);
 				break;
-			case ACCION_FORMULARIO:	
+			case ACCION_FORMULARIO:
 				formulario(request, response);
 				break;
 			default:
 				listar(request, response);
 				break;
 			}
+
+		} catch (Exception e) {
 			
-		}catch (Exception e) {
-			// TODO log
-			e.printStackTrace();
-			
-		}finally {
-			
+			LOG.error("Ha ocurrido un error a la hora de proveer los datos necesarios: vistaSelecionada: " + vistaSeleccionda + ". ERROR: " + e);
+
+		} finally {
+
 			request.getRequestDispatcher(vistaSeleccionda).forward(request, response);
 		}
-		
+
 	}
 
-	
-	
 	private void formulario(HttpServletRequest request, HttpServletResponse response) {
-		
-		//TODO pregutar por pID > 0 recuperar del DAO
-		// si no New Producto()
-		
-		//  	dao.getById(id) => implementar
-		
-		Producto producto = null;
-		
-		String pId = request.getParameter("id");
-		
-		if(!"".equals(pId) && pId != null)
-		{			
-			
-			try {
-				producto = dao.getById(Integer.parseInt(pId));
-				
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}	
-			
-		} else {
 
-			producto = new Producto();
-			
+		Producto producto = new Producto();
+
+		String pId = request.getParameter("id");
+
+		if (!"".equals(pId) && pId != null) {
+
+			try {
+
+				producto = dao.getById(Integer.parseInt(pId));
+
+			} catch (NumberFormatException e) {
+
+				LOG.error("El ID pasado no es un numero. ERROR: " + e);
+				
+				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
+				
+			} catch (Exception e) {
+				
+				LOG.error("Error al convertir el string de pId en integer. ERROR: " + e);
+				
+				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
+			}
+
 		}
-		
+
 		request.setAttribute("producto", producto);
 		vistaSeleccionda = VIEW_FORM;
-		
+
 	}
 
-	private void guardar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	private void guardar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String pId = request.getParameter("id");
 		String pNombre = request.getParameter("nombre");
 		String pPrecio = request.getParameter("precio");
 		String pDescuento = request.getParameter("descuento");
 		String pDescripcion = request.getParameter("descripcion");
 		String pImagen = request.getParameter("imagen");
-		
+
 		Producto p = new Producto();
-		p.setNombre(pNombre);
-		p.setDescripcion(pDescripcion);
-		p.setPrecio(Float.parseFloat(pPrecio));
-		p.setDescuento(Integer.parseInt(pDescuento));
-		p.setImagen(pImagen);
-		
-		if((!"".equals(pId) && pId !=null) || (!"".equals(pNombre) && pNombre !=null) || (!"".equals(pPrecio) && pPrecio !=null) 
-				|| (!"".equals(pDescuento) && pDescuento !=null) || (!"".equals(pDescripcion) && pDescripcion !=null) 
-				|| (!"".equals(pImagen) && pImagen !=null)) 
-		{	
-		
-			if("0".equals(pId))
-			{
-				
+			
+		p = rellenarDatosFormulario(pId, pNombre, pDescripcion, pImagen, pPrecio, pDescuento);
+
+		Set<ConstraintViolation<Producto>> validaciones = validator.validate(p);
+
+		if (validaciones.size() > 0) {
+
+			mensajeValidacion(request, validaciones);
+
+			request.setAttribute("producto", p);
+
+			vistaSeleccionda = VIEW_FORM;
+
+		} else {
+
+			if ("0".equals(pId)) {
+
 				try {
+
 					dao.create(p);
+
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+					LOG.error("Error al crear un nuevo porducto. Datos del producto: " + p.toString() + "\n ERROR: " + e);
 				}
-				
+
 				request.setAttribute("mensajeAlerta", new Alerta("Producto agregado correctamente :)", Alerta.TIPO_SUCCESS));
 				this.listar(request, response);
-				
+
 			} else {
-				
-				p.setId(Integer.parseInt(pId));
-				
+
 				try {
+					
+					p.setId(Integer.parseInt(pId));
+					
 					dao.update(Integer.parseInt(pId), p);
+					
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					LOG.error("El ID pasado no es un numero. ERROR: " + e);
+					
+					request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
+					
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					LOG.error("Error al actualizar producto. Datos producto: " + p.toString() + "\n ERROR: " + e);
+					
+					request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
 				}
-				
+
 				request.setAttribute("mensajeAlerta", new Alerta("Producto modificado correctamente :)", Alerta.TIPO_SUCCESS));
-				
+
 				this.listar(request, response);
-				
+
 			}
-		} else {
-			
-			vistaSeleccionda = VIEW_FORM;
-			
-			request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de agregar el producto :(. Compruebe que todo esta bien.", Alerta.TIPO_SUCCESS));
-			
+
 		}
-		
-		
+
+	}
+
+	private void mensajeValidacion(HttpServletRequest request, Set<ConstraintViolation<Producto>> validaciones) {
+
+		StringBuilder mensaje = new StringBuilder();
+		for (ConstraintViolation<Producto> cv : validaciones) {
+
+			mensaje.append("<p>");
+			mensaje.append(cv.getPropertyPath().toString().substring(0, 1).toUpperCase()
+					+ (cv.getPropertyPath().toString().substring(1))).append(": ");
+			mensaje.append(cv.getMessage());
+			mensaje.append("</p>");
+
+		}
+
+		request.setAttribute("mensajeAlerta", new Alerta(mensaje.toString(), Alerta.TIPO_DANGER));
+
 	}
 
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String pId = request.getParameter("id");
-		
+
 		Alerta alerta = new Alerta();
-		
-		if((!"".equals(pId) && pId !=null))
-		{
-			
-			Producto p = null;			
+
+		if ((!"".equals(pId) && pId != null)) {
+
+			Producto p = null;
 			try {
+				
 				p = dao.delete(Integer.parseInt(pId));
+				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				LOG.error("El ID pasado no es un numero. ERROR: " + e);
+				
+				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
 			}
-			
+
 			alerta.setTexto("El producto " + p.toString() + " ha sido eliminado con exito.");
 			alerta.setTipo(Alerta.TIPO_SUCCESS);
-			
-		}  else {
-			
+
+		} else {
+
 			alerta.setTexto("Ha ocurrido un error a la hora de eliminar el producto :(");
 			alerta.setTipo(Alerta.TIPO_DANGER);
-			
+
 		}
-		
+
 		request.setAttribute("mensajeAlerta", alerta);
 
 		this.listar(request, response);
@@ -226,10 +263,48 @@ public class ProductosController extends HttpServlet {
 	}
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
-		
-		request.setAttribute("productos", dao.getAll() );
+
+		request.setAttribute("productos", dao.getAll());
 		vistaSeleccionda = VIEW_TABLA;
-		
+
 	}
-	
+
+	private Producto rellenarDatosFormulario(String pId, String pNombre, String pDescripcion, String pImagen,
+			String pPrecio, String pDescuento) {
+
+		Producto resul = new Producto();
+
+		resul.setId(Integer.parseInt(pId));
+		resul.setNombre(pNombre);
+		resul.setDescripcion(pDescripcion);
+		resul.setImagen(pImagen);
+
+		try {
+			
+			resul.setPrecio(Float.parseFloat(pPrecio));
+			
+		} catch (NumberFormatException e) {
+			
+			LOG.error("El valor de precio no esta en el formato correcto. ERROR: " + e);
+			
+			resul.setPrecio(0);
+			
+		}
+
+		try {
+			
+			resul.setDescuento(Integer.parseInt(pDescuento));
+			
+		} catch (NumberFormatException e) {
+			
+			LOG.error("El valor de descuento no esta en el formato correcto. ERROR: " + e);
+			
+			resul.setDescuento(-1);
+			
+		}
+
+		return resul;
+
+	}
+
 }

@@ -4,8 +4,7 @@
 
 	<h1> Productos </h1>
 	
-	<div class="container d-flex flex-row">
-	
+	<div class="row flex-row mt-4 mb-4">
 		<div class="col-4">
 			<h2> Listado de productos </h2>
 		</div>
@@ -14,33 +13,42 @@
 		</div>
 	</div>
 	
-	<table class="table">
-		<thead class="thead-dark">
-		  <tr>
-		    <th scope="col">#ID</th>
-		    <th scope="col">Imagen</th>
-		    <th scope="col">Nombre</th>
-		    <th scope="col">Descripcion</th>
-		    <th scope="col">Precio</th>
-		    <th scope="col">Descuento</th>
-		    <th scope="col"></th>
-		  </tr>
-		</thead>
-		<tbody>
-		
-		<c:forEach items="${productos}" var="p">
-			<tr>
-			    <th scope="row">${p.id}</th>
-			    <td><img src="${p.imagen}" alt="imagen de ${p.nombre}" ></td>
-			    <td>${p.nombre}</td>
-			    <td>${p.descripcion}</td>
-			    <td>${p.precio}</td>
-			    <td>${p.descuento}</td>
-			    <td><a href="seguridad/productos?accion=formulario&id=${p.id}"> Editar </a></td>
-		  	</tr>
-		</c:forEach>
-		 
-		</tbody>
-	</table>
+	<table id="tabla" class="table display" style="width:100%">
+        <thead class="thead-dark">
+            <tr>
+	            <th scope="col">#ID</th>
+			    <th scope="col">Imagen</th>
+			    <th scope="col">Nombre</th>
+			    <th scope="col">Descripcion</th>
+			    <th scope="col">Precio</th>
+			    <th scope="col">Descuento</th>
+			    <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${productos}" var="p">
+				<tr>
+				    <th scope="row">${p.id}</th>
+				    <td><img src="${p.imagen}" alt="imagen de ${p.nombre}" ></td>
+				    <td>${p.nombre}</td>
+				    <td>${p.descripcion}</td>
+				    <td>${p.precio}</td>
+				    <td>${p.descuento}</td>
+				    <td><a href="seguridad/productos?accion=formulario&id=${p.id}"> Editar </a></td>
+			  	</tr>
+			</c:forEach>
+        </tbody>
+        <tfoot>
+            <tr>
+               	<th scope="col">#ID</th>
+			    <th scope="col">Imagen</th>
+			    <th scope="col">Nombre</th>
+			    <th scope="col">Descripcion</th>
+			    <th scope="col">Precio</th>
+			    <th scope="col">Descuento</th>
+			    <th scope="col"></th>
+            </tr>
+        </tfoot>
+    </table>
 
 <%@ include file="/includes/footer.jsp"%>

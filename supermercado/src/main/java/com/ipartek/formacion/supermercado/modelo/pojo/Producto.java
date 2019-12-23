@@ -1,13 +1,41 @@
 package com.ipartek.formacion.supermercado.modelo.pojo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
 public class Producto {
 	
 	public static final int DESCUENTO_MIN = 0;
 	public static final int DESCUENTO_MAX = 100;
 
-	private int id, descuento;
-	private String nombre, imagen, descripcion;
+	private int id;
+	
+	@NotNull(message="Este campo no puede estar vacio.")
+	@NotBlank(message="Este campo no puede estar vacio.")
+	@Size(min = 2, max = 150, message="El valor de este campo tiene que estar entre 2 y 150 caracteres.")
+	private String nombre; 
+	
+	@NotNull(message="Este campo no puede estar vacio.")
+	@NotBlank(message="Este campo no puede estar vacio.")
+	@Size(min = 2, max = 150, message="El valor de este campo tiene que estar entre 2 y 150 caracteres.")
+	private String descripcion;
+	
+	@NotNull(message="Este campo no puede estar vacio.")
+	@NotBlank(message="Este campo no puede estar vacio.")
+	private String imagen;
+	
+	@NotNull(message= "Este campo no puede estar vacio.")
+	@Range(min = 1, message="El valor de este campo no puede ser menor que 1.")
 	private float precio;
+	
+	@NotNull(message= "Este campo no puede estar vacio.")
+	@Range(min = 0, max = 100, message="El valor de este campo tiene que estar entre 0 y 100.")
+	private int descuento;
 	
 	public Producto() {
 		super();

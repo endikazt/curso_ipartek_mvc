@@ -21,7 +21,8 @@ public class ProductoDAO implements IDAO<Producto>{
 	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto ORDER BY id DESC LIMIT 500;";
 	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id=?;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
-	//private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento" + " FROM producto WHERE id = ? AND nombre = ?;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id = ? AND nombre = ?;";
+	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
 	private static final String SQL_INSERT = "INSERT INTO producto (nombre, descripcion, imagen, precio, descuento) VALUES ( ? , ?, ?, ?, ?);";
 	private static final String SQL_UPDATE = "UPDATE producto SET nombre= ?, descripcion= ?, imagen= ?, precio= ?, descuento= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM producto WHERE id = ?;";
@@ -117,11 +118,15 @@ public class ProductoDAO implements IDAO<Producto>{
 			
 			int affetedRows = pst.executeUpdate();
 			if (affetedRows == 1) {
+				
 				LOG.info("Eliminacion completada. Prodcuto = " + resul.toString());
+				
+			} else {
+				
+				throw new Exception("No se ha podido eliminar el registro.");
+				
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 		return resul;
@@ -150,6 +155,10 @@ public class ProductoDAO implements IDAO<Producto>{
 			if (affectedRows == 1) {
 				
 				resul = this.getById(id);
+				
+			} else {
+				
+				throw new Exception("No se encontro registro para id=" + id);
 				
 			}
 		}

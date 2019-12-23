@@ -19,9 +19,7 @@
                                    name="nombre"
                                    id="nombre" 
                                    value="${producto.nombre}"
-                                   required
                                    placeholder="Mínimo 2 Máximo 150"
-                                   pattern=".{2,150}"
                                    aria-describedby="nombreHelp">
                             <small id="nombreHelp" class="form-text text-muted">Nombre del producto</small>
                         </div>
@@ -32,10 +30,8 @@
                                    class="form-control"
                                    name="descripcion"
                                    id="descripcion" 
-                                   value="${producto.descripcion}"
-                                   required
+                                   value="${producto.descripcion}"     
                                    placeholder="Mínimo 2 Máximo 150"
-                                   pattern=".{2,150}"
                                    aria-describedby="nombreHelp">
                             <small id="nombreHelp" class="form-text text-muted">Descripcion del producto</small>
                         </div>
@@ -48,9 +44,8 @@
                                     id="precio" 
                                     name="precio"
                                     value="${producto.precio}"
-                                    required
                                     placeholder="0,00€"
-                                    pattern=".{2,150}"
+                                    step=".01"
                                     aria-describedby="precioHelp">
                              <small id="precioHelp" class="form-text text-muted">Precio en euros sin Iva, ni descuento</small>
                          </div>
@@ -62,10 +57,7 @@
                                     id="descuento" 
                                     name="descuento"
                                     value="${producto.descuento}"
-                                    required
                                     placeholder="0"
-                                    min=0
-                                    max=100
                                     aria-describedby="precioHelp">
                              <small id="precioHelp" class="form-text text-muted">Descuento del producto</small>
                          </div>
@@ -77,17 +69,15 @@
                                    name="imagen"
                                    id="imagen" 
                                    value="${producto.imagen}"
-                                   required
                                    placeholder="URL (.JPG, .JPEG, .PNG)"
-                                   pattern=".{2,150}"
                                    aria-describedby="nombreHelp">
                             <small id="nombreHelp" class="form-text text-muted">Imagen del producto</small>
                         </div>
                         
                         <c:choose>
-                        	<c:when test="${producto.id != 0}">
+                        	<c:when test="${producto.id > 0}">
                         		<button type="submit" class="btn btn-block btn-primary">Modificar producto</button> 
-                        		<button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalEliminar"> Eliminar producto </a>	            		
+                        		<button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modalEliminar"> Eliminar producto </button>	            		
                         	</c:when>
                         	<c:otherwise>
                         		<button type="submit" class="btn btn-block btn-outline-primary">Crear producto</button> 

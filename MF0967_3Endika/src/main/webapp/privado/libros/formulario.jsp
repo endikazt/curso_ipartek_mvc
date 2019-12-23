@@ -60,6 +60,7 @@
 			                name="precio"
 			                value="${libro.precio}"
 			                placeholder="Ejemplo: 20,00€"
+			                step=".01"
 			                aria-describedby="precioHelp">
 			         <small id="precioHelp" class="form-text text-muted">Precio en euros sin Iva, ni descuento (Minimo 1&#8364)</small>
 			     </div>
