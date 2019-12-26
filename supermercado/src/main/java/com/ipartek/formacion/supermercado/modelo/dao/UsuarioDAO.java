@@ -20,7 +20,7 @@ public class UsuarioDAO implements IUsuarioDAO{
 	private final static Logger LOG = Logger.getLogger(UsuarioDAO.class);
 	
 	private static final String SQL_GET_ALL = "SELECT id, nombre, password FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, password FROM producto WHERE id=?;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, password FROM usuario WHERE id=?;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
 	private static final String SQL_EXISTE = " SELECT id, nombre, password FROM usuario WHERE nombre = ? AND password = ?;";
 	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
@@ -59,7 +59,7 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -137,7 +137,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 		) {
 
 			pst.setString(1, pojo.getNombre());
-			pst.setInt(2, id);
+			pst.setString(2, pojo.getPassword());
+			pst.setInt(3, id);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -167,6 +168,7 @@ public class UsuarioDAO implements IUsuarioDAO{
 		) {
 
 			pst.setString(1, pojo.getNombre());
+			pst.setString(2, pojo.getPassword());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {

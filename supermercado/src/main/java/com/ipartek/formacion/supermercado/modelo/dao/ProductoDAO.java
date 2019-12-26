@@ -43,7 +43,7 @@ public class ProductoDAO implements IDAO<Producto>{
 	}
 
 	@Override
-	public ArrayList<Producto> getAll() {
+	public ArrayList<Producto> getAll() throws Exception {
 		
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 

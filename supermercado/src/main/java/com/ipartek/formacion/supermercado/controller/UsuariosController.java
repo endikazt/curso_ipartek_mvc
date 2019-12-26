@@ -18,19 +18,21 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
+import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 /**
  * Servlet implementation class ProductosController
  */
-@WebServlet("/seguridad/productos")
-public class ProductosController extends HttpServlet {
+@WebServlet("/seguridad/usuarios")
+public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final static Logger LOG = Logger.getLogger(ProductosController.class);
-	private static final String VIEW_TABLA = "productos/index.jsp";
-	private static final String VIEW_FORM = "productos/formulario.jsp";
+	private final static Logger LOG = Logger.getLogger(UsuariosController.class);
+	private static final String VIEW_TABLA = "usuarios/index.jsp";
+	private static final String VIEW_FORM = "usuarios/formulario.jsp";
 	private static String vistaSeleccionda = VIEW_TABLA;
-	private static ProductoDAO dao;
+	private static UsuarioDAO dao;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -46,7 +48,7 @@ public class ProductosController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 
-		dao = ProductoDAO.getIntance();
+		dao = UsuarioDAO.getIntance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -108,7 +110,7 @@ public class ProductosController extends HttpServlet {
 
 	private void formulario(HttpServletRequest request, HttpServletResponse response) {
 
-		Producto producto = new Producto();
+		Usuario usuario = new Usuario();
 
 		String pId = request.getParameter("id");
 
@@ -116,7 +118,7 @@ public class ProductosController extends HttpServlet {
 
 			try {
 
-				producto = dao.getById(Integer.parseInt(pId));
+				usuario = dao.getById(Integer.parseInt(pId));
 
 			} catch (NumberFormatException e) {
 
@@ -133,7 +135,7 @@ public class ProductosController extends HttpServlet {
 
 		}
 
-		request.setAttribute("producto", producto);
+		request.setAttribute("usuario", usuario);
 		vistaSeleccionda = VIEW_FORM;
 
 	}
@@ -143,22 +145,20 @@ public class ProductosController extends HttpServlet {
 
 		String pId = request.getParameter("id");
 		String pNombre = request.getParameter("nombre");
-		String pPrecio = request.getParameter("precio");
-		String pDescuento = request.getParameter("descuento");
-		String pDescripcion = request.getParameter("descripcion");
-		String pImagen = request.getParameter("imagen");
+		String pPassword = request.getParameter("password");
 
-		Producto p = new Producto();
-			
-		p = rellenarDatosFormulario(pId, pNombre, pDescripcion, pImagen, pPrecio, pDescuento);
+		Usuario user = new Usuario();
+		user.setId(Integer.parseInt(pId));
+		user.setNombre(pNombre);
+		user.setPassword(pPassword);
 
-		Set<ConstraintViolation<Producto>> validaciones = validator.validate(p);
+		Set<ConstraintViolation<Usuario>> validaciones = validator.validate(user);
 
 		if (validaciones.size() > 0) {
 
 			mensajeValidacion(request, validaciones);
 
-			request.setAttribute("producto", p);
+			request.setAttribute("usuario", user);
 
 			vistaSeleccionda = VIEW_FORM;
 
@@ -168,11 +168,11 @@ public class ProductosController extends HttpServlet {
 
 				try {
 
-					dao.create(p);
+					dao.create(user);
 
 				} catch (Exception e) {
 
-					LOG.error("Error al crear un nuevo porducto. Datos del producto: " + p.toString() + "\n ERROR: " + e);
+					LOG.error("Error al crear un nuevo usuario. Datos del usuario: " + user.toString() + "\n ERROR: " + e);
 				}
 
 				request.setAttribute("mensajeAlerta", new Alerta("Producto agregado correctamente :)", Alerta.TIPO_SUCCESS));
@@ -182,9 +182,9 @@ public class ProductosController extends HttpServlet {
 
 				try {
 					
-					p.setId(Integer.parseInt(pId));
+					user.setId(Integer.parseInt(pId));
 					
-					dao.update(Integer.parseInt(pId), p);
+					dao.update(Integer.parseInt(pId), user);
 					
 				} catch (NumberFormatException e) {
 					
@@ -194,12 +194,12 @@ public class ProductosController extends HttpServlet {
 					
 				} catch (Exception e) {
 					
-					LOG.error("Error al actualizar producto. Datos producto: " + p.toString() + "\n ERROR: " + e);
+					LOG.error("Error al actualizar usuario. Datos usuario: " + user.toString() + "\n ERROR: " + e);
 					
 					request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
 				}
 
-				request.setAttribute("mensajeAlerta", new Alerta("Producto modificado correctamente :)", Alerta.TIPO_SUCCESS));
+				request.setAttribute("mensajeAlerta", new Alerta("Usuario modificado correctamente :)", Alerta.TIPO_SUCCESS));
 
 				this.listar(request, response);
 
@@ -209,10 +209,10 @@ public class ProductosController extends HttpServlet {
 
 	}
 
-	private void mensajeValidacion(HttpServletRequest request, Set<ConstraintViolation<Producto>> validaciones) {
+	private void mensajeValidacion(HttpServletRequest request, Set<ConstraintViolation<Usuario>> validaciones) {
 
 		StringBuilder mensaje = new StringBuilder();
-		for (ConstraintViolation<Producto> cv : validaciones) {
+		for (ConstraintViolation<Usuario> cv : validaciones) {
 
 			mensaje.append("<p>");
 			mensaje.append(cv.getPropertyPath().toString().substring(0, 1).toUpperCase()
@@ -234,10 +234,10 @@ public class ProductosController extends HttpServlet {
 
 		if ((!"".equals(pId) && pId != null)) {
 
-			Producto p = null;
+			Usuario user = null;
 			try {
 				
-				p = dao.delete(Integer.parseInt(pId));
+				user = dao.delete(Integer.parseInt(pId));
 				
 			} catch (Exception e) {
 				
@@ -246,12 +246,12 @@ public class ProductosController extends HttpServlet {
 				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
 			}
 
-			alerta.setTexto("El producto " + p.toString() + " ha sido eliminado con exito.");
+			alerta.setTexto("El usuario " + user.toString() + " ha sido eliminado con exito.");
 			alerta.setTipo(Alerta.TIPO_SUCCESS);
 
 		} else {
 
-			alerta.setTexto("Ha ocurrido un error a la hora de eliminar el producto :(");
+			alerta.setTexto("Ha ocurrido un error a la hora de eliminar el usuario :(");
 			alerta.setTipo(Alerta.TIPO_DANGER);
 
 		}
@@ -262,48 +262,10 @@ public class ProductosController extends HttpServlet {
 
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("productos", dao.getAll());
+		request.setAttribute("usuarios", dao.getAll());
 		vistaSeleccionda = VIEW_TABLA;
-
-	}
-
-	private Producto rellenarDatosFormulario(String pId, String pNombre, String pDescripcion, String pImagen,
-			String pPrecio, String pDescuento) {
-
-		Producto resul = new Producto();
-
-		resul.setId(Integer.parseInt(pId));
-		resul.setNombre(pNombre);
-		resul.setDescripcion(pDescripcion);
-		resul.setImagen(pImagen);
-
-		try {
-			
-			resul.setPrecio(Float.parseFloat(pPrecio));
-			
-		} catch (NumberFormatException e) {
-			
-			LOG.error("El valor de precio no esta en el formato correcto. ERROR: " + e);
-			
-			resul.setPrecio(0);
-			
-		}
-
-		try {
-			
-			resul.setDescuento(Integer.parseInt(pDescuento));
-			
-		} catch (NumberFormatException e) {
-			
-			LOG.error("El valor de descuento no esta en el formato correcto. ERROR: " + e);
-			
-			resul.setDescuento(-1);
-			
-		}
-
-		return resul;
 
 	}
 

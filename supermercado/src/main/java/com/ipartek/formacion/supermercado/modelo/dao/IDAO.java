@@ -8,10 +8,11 @@ public interface IDAO<P> {
 	 * 
 	 * Recupera todos los pojos de una base de datos
 	 * @param ArrayList<P>
+	 * @throws Exception 
 	 * 
 	 */
 	
-	ArrayList<P> getAll();
+	ArrayList<P> getAll() throws Exception;
 	
 	/**
 	 * 

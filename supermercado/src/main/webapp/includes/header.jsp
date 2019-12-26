@@ -19,42 +19,83 @@
     <base href="${pageContext.request.contextPath}/">
 
    <!-- Bootstrap core CSS -->
-   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
    
-   <!-- Datatble CSS -->
+   <!-- Datatable CSS -->
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"/>
+   
+   <!-- Fontaesome -->
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"/>
 
    <!-- nuestro css -->
    <link rel="stylesheet" href="css/custom.css">
 
   </head>
   <body id="top">
-    <nav class="site-header sticky-top py-1">
-        <div class="container d-flex flex-column flex-md-row justify-content-between">
-            <a class="py-2" href="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mx-auto" role="img" viewBox="0 0 24 24" focusable="false"><title>Product</title><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>
-            </a>
-            
-            <c:if test="${empty usuarioLogeado}">
-            	
-            	<a class="py-2 d-none d-md-inline-block" href="login.jsp">Login</a>
-	           
-            
-            </c:if>
-            
-            <c:if test="${not empty usuarioLogeado}">
-            
-            	<a class="py-2 d-none d-md-inline-block" href="seguridad/productos?accion=listar">Productos</a>
-	            <a class="py-2 d-none d-md-inline-block" href="logout"> Logout</a> 
-            
-            </c:if>
-            
-                       
-           
-        </div>
-    </nav>
+  
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#"><i class="fas fa-store-alt"></i></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+		  <ul class="navbar-nav">
+		    <li class="nav-item active">
+		      <a class="nav-link" href="#">Home </a>
+		    </li>
+		    
+		    <c:if test="${not empty usuarioLogeado}">
+	    	
+		    <li class="nav-item dropdown active">
+		      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        Productos
+		      </a>
+		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+		        <a class="dropdown-item" href="seguridad/productos?accion=listar">Listado productos</a>
+		        <a class="dropdown-item" href="seguridad/productos?accion=formulario">Nuevo producto</a>
+		      </div>
+		    </li>
+		    <li class="nav-item dropdown active">
+		      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        Usuarios
+		      </a>
+		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+		        <a class="dropdown-item" href="seguridad/usuarios?accion=listar">Listado usuarios</a>
+		        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario">Nuevo usuario</a>
+		      </div>
+		    </li>
+		        
+		    </c:if> 
+		  
+		  <c:if test="${empty usuarioLogeado}">
 
+		  	 <li class="nav-item">
+			    <a class="btn btn-outline-success my-2 my-sm-0" href="login.jsp">Login</a>
+		    </li>
+		  
+		  </c:if>
+		  
+		  <c:if test="${not empty usuarioLogeado}">
+		  
+		  	<li class="nav-item dropdown">
+		      <a class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        ${usuarioLogeado.nombre}
+		      </a>
+		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+		        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>
+		        <div class="dropdown-divider"></div>
+          		<a class="dropdown-item" href="logout">Cerrar sesion</a>
+		      </div>
+		    </li>
+		  
+		  </c:if>
+		  
+		  </ul>
+		</div>
+	</nav>
+  
+	  
     <main class="container">
     
     <c:if test="${not empty mensajeAlertaLogout}">
