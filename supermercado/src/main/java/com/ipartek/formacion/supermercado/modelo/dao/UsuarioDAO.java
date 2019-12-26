@@ -1,69 +1,51 @@
 package com.ipartek.formacion.supermercado.modelo.dao;
 
-public class UsuarioDAO {
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import com.ipartek.formacion.supermercado.modelo.ConnectionManager;
+import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
+
+public class UsuarioDAO implements IUsuarioDAO{
+	
 	private static UsuarioDAO INSTANCE = null;
-
-	private static final String SQL_GET_ALL = "SELECT u.id, u.nombre, r.id as 'id_rol', r.nombre as 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT u.id, u.nombre, r.id as 'id_rol', r.nombre as 'nombre_rol',contrasenya, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.id = ?;";
-	private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT u.id, u.nombre, r.id as 'id_rol', r.nombre as 'nombre_rol',contrasenya, fecha_creacion, fecha_eliminacion FROM usuario as u, rol as r WHERE u.id_rol = r.id AND u.nombre LIKE ? ORDER BY u.nombre ASC LIMIT 500;";
-	private static final String SQL_EXISTE = " SELECT u.id, u.nombre, r.id as 'id_rol', r.nombre as 'nombre_rol', contrasenya, fecha_creacion, fecha_eliminacion " + " FROM usuario as u, rol as r " + " WHERE u.id_rol = r.id AND u.nombre = ? AND contrasenya = ? ;";
-	private static final String SQL_INSERT = "INSERT INTO usuario ( nombre, contrasenya) VALUES ( ? , ?);";
-	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, contrasenya= ? WHERE id = ?;";
-	// private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
-	private static final String SQL_DELETE_LOGICO = "UPDATE usuario SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
-
+	
+	private final static Logger LOG = Logger.getLogger(UsuarioDAO.class);
+	
+	private static final String SQL_GET_ALL = "SELECT id, nombre, password FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, password FROM producto WHERE id=?;";
+	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, password FROM usuario WHERE nombre = ? AND password = ?;";
+	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
+	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, password) VALUES ( ? , ?);";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, password = ? WHERE id = ?;";
+	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
+	//private static final String SQL_DELETE_LOGICO = "UPDATE producto SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
+	
 	private UsuarioDAO() {
-		super();
+		super();		
 	}
-
-	public static synchronized UsuarioDAO getInstance() {
-
-		if (INSTANCE == null) {
+	
+	public static synchronized UsuarioDAO getIntance() {
+		
+		if(INSTANCE == null) {
 			INSTANCE = new UsuarioDAO();
 		}
-
-		return INSTANCE;
-
-	}
-
-	/**
-	 * Compruab si existe el usuario en la base datos, lo busca por su nombre y
-	 * conetrsenya
-	 * 
-	 * @param nombre
-	 * @param contrasenya
-	 * @return Usuario con datos si existe, null en caso de no existir
-	 */
-	public Usuario existe(String nombre, String contrasenya) {
-
-		Usuario usuario = null;
-
 		
-
-		try (Connection con = ConnectionManager.getConnection(); PreparedStatement pst = con.prepareStatement(SQL_EXISTE);) {
-
-			// sustituir ? por parametros
-			pst.setString(1, nombre);
-			pst.setString(2, contrasenya);
-
-			// ejecutar sentencia SQL y obtener Resultado
-			try (ResultSet rs = pst.executeQuery()) {
-
-				if (rs.next()) {
-					usuario = mapper(rs);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return usuario;
+		return INSTANCE;
+		
 	}
 
+	@Override
 	public ArrayList<Usuario> getAll() {
-
+		
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 
 		try (Connection con = ConnectionManager.getConnection();
@@ -71,12 +53,9 @@ public class UsuarioDAO {
 				ResultSet rs = pst.executeQuery()) {
 
 			while (rs.next()) {
-				/*
-				 * Usuario u = new Usuario(); u.setId(rs.getInt("id"));
-				 * u.setNombre(rs.getString("nombre"));
-				 * u.setContrasenya(rs.getString("contrasenya")); lista.add(u);
-				 */
-				lista.add(mapper(rs));
+				
+				Usuario p = mapper(rs);
+				lista.add(p);
 
 			}
 
@@ -87,92 +66,107 @@ public class UsuarioDAO {
 		return lista;
 	}
 
-	public ArrayList<Usuario> getAllByNombre(String nombre) {
-		ArrayList<Usuario> lista = new ArrayList<Usuario>();
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_BY_NOMBRE);) {
-
-			pst.setString(1, "%" + nombre + "%");
-
-			try (ResultSet rs = pst.executeQuery()) {
-
-				while (rs.next()) {
-					lista.add(mapper(rs));
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return lista;
-	}
-
-	public Usuario getById(int id) {
-		Usuario resul = new Usuario();
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID)) {
+	@Override
+	public Usuario getById(int id) throws Exception {
+		
+		Usuario resul = null;
+		
+		try (			
+				Connection con = ConnectionManager.getConnection();				
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID);
+						
+			) {
 
 			pst.setInt(1, id);
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
+					
 					resul = mapper(rs);
+					
 				}
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return resul;
 	}
 
-	public boolean delete(int id) {
-		boolean resultado = false;
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_DELETE_LOGICO);) {
+	@Override
+	public Usuario delete(int id) throws Exception {
+		
+		Usuario resul = this.getById(id);
+		
+		try (
+				
+			Connection con = ConnectionManager.getConnection();
+			PreparedStatement pst = con.prepareStatement(SQL_DELETE);
+				
+		) {
 
 			pst.setInt(1, id);
-
+			
 			int affetedRows = pst.executeUpdate();
 			if (affetedRows == 1) {
-				resultado = true;
+				
+				LOG.info("Eliminacion completada. Prodcuto = " + resul.toString());
+				
+			} else {
+				
+				throw new Exception("No se ha podido eliminar el registro.");
+				
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-
-		return resultado;
+		
+		return resul;
 	}
 
-	public boolean modificar(Usuario pojo) throws Exception {
-		boolean resultado = false;
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+	@Override
+	public Usuario update(int id, Usuario pojo) throws Exception {
+		
+		Usuario resul = null;
+		
+		try (
+				
+			Connection con = ConnectionManager.getConnection();
+			PreparedStatement pst = con.prepareStatement(SQL_UPDATE);		
+				
+		) {
 
 			pst.setString(1, pojo.getNombre());
-			pst.setString(2, pojo.getContrasenya());
-			pst.setInt(3, pojo.getId());
+			pst.setInt(2, id);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				resultado = true;
+				
+				resul = this.getById(id);
+				
+			} else {
+				
+				throw new Exception("No se encontro registro para id=" + id);
+				
 			}
-
 		}
-		return resultado;
+		
+		return resul;
 	}
 
-	public Usuario crear(Usuario pojo) throws Exception {
-
-		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+	@Override
+	public Usuario create(Usuario pojo) throws Exception {
+		
+		Usuario resul = null;
+		
+		try (
+				
+			Connection con = ConnectionManager.getConnection();
+			PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+					
+		) {
 
 			pst.setString(1, pojo.getNombre());
-			pst.setString(2, pojo.getContrasenya());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -186,22 +180,45 @@ public class UsuarioDAO {
 
 		}
 
-		return pojo;
+		return resul;
 	}
 
+	@Override
+	public Usuario exist(String nombre, String password) {
+		
+		Usuario resul = null;
+		
+		try (			
+				Connection con = ConnectionManager.getConnection();				
+				PreparedStatement pst = con.prepareStatement(SQL_EXISTE);
+						
+			) {
+
+			pst.setString(1, nombre);
+			pst.setString(2, password);
+			LOG.debug(pst);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				
+				if (rs.next()) {
+					resul = mapper(rs);
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+		
+		return resul;
+	}
+	
 	private Usuario mapper(ResultSet rs) throws SQLException {
 		
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id"));
 		u.setNombre(rs.getString("nombre"));
-		u.setContrasenya(rs.getString("contrasenya"));
-		u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
-		u.setFechaEliminacion(rs.getTimestamp("fecha_eliminacion"));
-		
-		Rol rol = new Rol();
-		rol.setId( rs.getInt("id_rol"));
-		rol.setNombre( rs.getString("nombre_rol"));
-		u.setRol(rol);
+		u.setPassword(rs.getString("password"));
 		
 		return u;
 	}

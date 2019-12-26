@@ -12,10 +12,12 @@
 
 
 -- Volcando estructura de base de datos para supermercado
+DROP DATABASE IF EXISTS `supermercado`;
 CREATE DATABASE IF NOT EXISTS `supermercado` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `supermercado`;
 
 -- Volcando estructura para tabla supermercado.producto
+DROP TABLE IF EXISTS `producto`;
 CREATE TABLE IF NOT EXISTS `producto` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(150) NOT NULL DEFAULT '0',
@@ -23,13 +25,15 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `imagen` varchar(250) NOT NULL DEFAULT '0',
   `precio` float NOT NULL DEFAULT '0',
   `descuento` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla supermercado.producto: ~10 rows (aproximadamente)
+-- Volcando datos para la tabla supermercado.producto: ~11 rows (aproximadamente)
+DELETE FROM `producto`;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 INSERT INTO `producto` (`id`, `nombre`, `descripcion`, `imagen`, `precio`, `descuento`) VALUES
-	(1, 'Turrón duro', 'Turrón duro, caja 250 g', 'https://supermercado.eroski.es/images/17930009.jpg', 10.95, 10),
+	(1, 'TurrÃ³n duro', 'TurrÃ³n duro, caja 250 g', 'https://supermercado.eroski.es/images/17930009.jpg', 10.95, 90),
 	(2, 'Langostino crudo', 'Langostino crudo 35/42, caja 700 g', 'https://supermercado.eroski.es/images/16550501.jpg', 20, 70),
 	(3, 'Vino Tinto', 'Vino Tinto Crianza, botella 75 cl\\r\\n', 'https://supermercado.eroski.es/images/2026631.jpg', 20, 70),
 	(4, 'La gula del norte 430 g', 'Gulas del norte congeladas, bandeja 430 g', 'https://supermercado.eroski.es/images/19780345.jpg', 20, 70),
@@ -38,8 +42,43 @@ INSERT INTO `producto` (`id`, `nombre`, `descripcion`, `imagen`, `precio`, `desc
 	(7, 'COOSUR', 'Aceite oliva virgen extra', 'https://supermercado.eroski.es/images/15923279.jpg', 20, 50),
 	(8, 'SAN MIGUEL', 'Cerveza, pack 24x33 cl', 'https://supermercado.eroski.es/images/16514556.jpg', 20, 40),
 	(9, 'ZÜ PREMIUM 2L', 'Zumo de naranja exprimido sin pulpa', 'https://supermercado.eroski.es/images/13899539.jpg', 20, 70),
-	(10, 'CODORNIU', 'Cava Brut Reserva, botella 75 cl', 'https://supermercado.eroski.es/images/399691.jpg', 20, 50);
+	(10, 'CODORNIU', 'Cava Brut Reserva, botella 75 cl', 'https://supermercado.eroski.es/images/399691.jpg', 20, 50),
+	(14, 'aaaa', 'aaaa', 'https://image.flaticon.com/icons/png/512/372/372627.png', 5.5, 0);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+
+-- Volcando estructura para tabla supermercado.rol
+DROP TABLE IF EXISTS `rol`;
+CREATE TABLE IF NOT EXISTS `rol` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla supermercado.rol: ~2 rows (aproximadamente)
+DELETE FROM `rol`;
+/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` (`id`, `nombre`) VALUES
+	(1, 'ADMIN'),
+	(2, 'USUARIO');
+/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
+
+-- Volcando estructura para tabla supermercado.usuario
+DROP TABLE IF EXISTS `usuario`;
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Volcando datos para la tabla supermercado.usuario: ~2 rows (aproximadamente)
+DELETE FROM `usuario`;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` (`id`, `nombre`, `password`) VALUES
+	(1, 'endika', '123456'),
+	(2, 'admin', 'admin');
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
