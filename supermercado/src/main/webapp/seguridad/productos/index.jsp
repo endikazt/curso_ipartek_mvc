@@ -22,6 +22,7 @@
 			    <th scope="col">Descripcion</th>
 			    <th scope="col">Precio</th>
 			    <th scope="col">Descuento</th>
+			    <th scope="col">Usuario</th>
 			    <th scope="col"></th>
             </tr>
         </thead>
@@ -34,6 +35,7 @@
 				    <td>${p.descripcion}</td>
 				    <td>${p.precio}</td>
 				    <td>${p.descuento}</td>
+				    <td>${p.usuario.nombre}</td>
 				    <td><a href="seguridad/productos?accion=formulario&id=${p.id}"> Editar </a></td>
 			  	</tr>
 			</c:forEach>
@@ -46,6 +48,7 @@
 			    <th scope="col">Descripcion</th>
 			    <th scope="col">Precio</th>
 			    <th scope="col">Descuento</th>
+			    <th scope="col">Usuario</th>
 			    <th scope="col"></th>
             </tr>
         </tfoot>

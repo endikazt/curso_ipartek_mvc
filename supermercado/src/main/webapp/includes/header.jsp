@@ -71,7 +71,7 @@
 		  <c:if test="${empty usuarioLogeado}">
 
 		  	 <li class="nav-item">
-			    <a class="btn btn-outline-success my-2 my-sm-0" href="login.jsp">Login</a>
+			    <a class="btn btn-outline-primary my-2 my-sm-0" href="login.jsp">Login</a>
 		    </li>
 		  
 		  </c:if>
@@ -79,7 +79,7 @@
 		  <c:if test="${not empty usuarioLogeado}">
 		  
 		  	<li class="nav-item dropdown">
-		      <a class="btn btn-outline-success my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		        ${usuarioLogeado.nombre}
 		      </a>
 		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

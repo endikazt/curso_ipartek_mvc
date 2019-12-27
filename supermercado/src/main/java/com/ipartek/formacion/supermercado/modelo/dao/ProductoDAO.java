@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.ConnectionManager;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 public class ProductoDAO implements IDAO<Producto>{
 	
@@ -18,8 +19,8 @@ public class ProductoDAO implements IDAO<Producto>{
 	
 	private final static Logger LOG = Logger.getLogger(ProductoDAO.class);
 	
-	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id=?;";
+	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto WHERE id=?;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
 	private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id = ? AND nombre = ?;";
 	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
@@ -53,13 +54,7 @@ public class ProductoDAO implements IDAO<Producto>{
 
 			while (rs.next()) {
 				
-				Producto p = new Producto();
-				p.setId( rs.getInt("id"));
-				p.setNombre(rs.getString("nombre"));
-				p.setDescripcion(rs.getString("descripcion"));
-				p.setImagen(rs.getString("imagen"));
-				p.setPrecio(rs.getFloat("precio"));
-				p.setDescuento(rs.getInt("descuento"));
+				Producto p = mapper(rs);
 				lista.add(p);
 
 			}
@@ -86,12 +81,9 @@ public class ProductoDAO implements IDAO<Producto>{
 
 			try (ResultSet rs = pst.executeQuery()) {
 				if (rs.next()) {
-					resul.setId( rs.getInt("id"));
-					resul.setNombre(rs.getString("nombre"));
-					resul.setDescripcion(rs.getString("descripcion"));
-					resul.setImagen(rs.getString("imagen"));
-					resul.setPrecio(rs.getFloat("precio"));
-					resul.setDescuento(rs.getInt("descuento"));
+					
+					resul = mapper(rs);
+					
 				}
 			}
 			
@@ -197,6 +189,23 @@ public class ProductoDAO implements IDAO<Producto>{
 		}
 
 		return resul;
+	}
+	
+	private Producto mapper(ResultSet rs) throws NumberFormatException, Exception {
+		
+		UsuarioDAO daoUsuario = UsuarioDAO.getIntance();
+		
+		Producto p = new Producto();
+		
+		p.setId(rs.getInt("id"));
+		p.setNombre(rs.getString("nombre"));
+		p.setDescripcion(rs.getString("descripcion"));
+		p.setImagen(rs.getString("imagen"));
+		p.setPrecio(Float.parseFloat(rs.getString("precio")));
+		p.setDescuento(Integer.parseInt(rs.getString("descuento")));
+		p.setUsuario(daoUsuario.getById(Integer.parseInt(rs.getString("id_usuario"))));
+		
+		return p;
 	}
 
 }

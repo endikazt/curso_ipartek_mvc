@@ -37,6 +37,8 @@ public class Producto {
 	@Range(min = 0, max = 100, message="El valor de este campo tiene que estar entre 0 y 100.")
 	private int descuento;
 	
+	private Usuario usuario;
+	
 	public Producto() {
 		super();
 		this.id = 0;
@@ -45,10 +47,11 @@ public class Producto {
 		this.imagen = "https://image.flaticon.com/icons/png/512/372/372627.png";
 		this.descripcion = "";
 		this.precio = 0;
+		this.usuario = new Usuario();
 	}
 
 
-	public Producto(int id, int descuento, String nombre, String imagen, String descripcion, float precio) {
+	public Producto(int id, int descuento, String nombre, String imagen, String descripcion, float precio, Usuario usuario) {
 		super();
 		this.id = id;
 		this.descuento = descuento;
@@ -56,6 +59,7 @@ public class Producto {
 		this.imagen = imagen;
 		this.descripcion = descripcion;
 		this.precio = precio;
+		this.usuario = usuario;
 	}
 
 
@@ -118,6 +122,17 @@ public class Producto {
 		this.precio = precio;
 	}
 	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+
 	public float calcularPrecioDescuento() {
 		
 		float precioDescuento = 0;

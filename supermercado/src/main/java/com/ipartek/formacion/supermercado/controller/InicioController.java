@@ -45,13 +45,13 @@ public class InicioController extends HttpServlet {
 		
 		if(null == ConnectionManager.getConnection()) {
 			
-			//SenRedirect
+			//resp.se
 			
 		}
 		
 		else {
 			
-			super.service(req, res);
+			super.service(req, resp);
 			
 		}
 	}

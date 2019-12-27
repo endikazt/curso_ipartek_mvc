@@ -21,6 +21,7 @@ import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 /**
  * Servlet implementation class ProductosController
@@ -226,7 +227,7 @@ public class UsuariosController extends HttpServlet {
 
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
 
 		String pId = request.getParameter("id");
 
@@ -239,13 +240,18 @@ public class UsuariosController extends HttpServlet {
 				
 				user = dao.delete(Integer.parseInt(pId));
 				
+			} catch (MySQLIntegrityConstraintViolationException e1) {
+				
+				request.setAttribute("mensajeAlerta", new Alerta("No se puede eliminar un usuario con productos asociados >:(", Alerta.TIPO_DANGER));
+				
+				this.listar(request, response);
+				
 			} catch (Exception e) {
 				
 				LOG.error("El ID pasado no es un numero. ERROR: " + e);
 				
 				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
-			}
-
+			} 
 			alerta.setTexto("El usuario " + user.toString() + " ha sido eliminado con exito.");
 			alerta.setTipo(Alerta.TIPO_SUCCESS);
 

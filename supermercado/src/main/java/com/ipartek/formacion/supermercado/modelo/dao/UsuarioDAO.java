@@ -111,11 +111,11 @@ public class UsuarioDAO implements IUsuarioDAO{
 			int affetedRows = pst.executeUpdate();
 			if (affetedRows == 1) {
 				
-				LOG.info("Eliminacion completada. Prodcuto = " + resul.toString());
+				LOG.info("Eliminacion completada. Producto = " + resul.toString());
 				
 			} else {
 				
-				throw new Exception("No se ha podido eliminar el registro.");
+				throw new Exception("No se ha podido eliminar el registro. El usuario ni existe o tiene productos asociados.");
 				
 			}
 
