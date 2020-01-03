@@ -1,4 +1,4 @@
-package com.ipartek.formacion.supermercado.controller;
+package com.ipartek.formacion.supermercado.controller.seguridad;
 
 import java.io.IOException;
 import java.util.Set;
@@ -18,7 +18,9 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
+import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 /**
  * Servlet implementation class ProductosController
@@ -31,6 +33,7 @@ public class ProductosController extends HttpServlet {
 	private static final String VIEW_FORM = "productos/formulario.jsp";
 	private static String vistaSeleccionda = VIEW_TABLA;
 	private static ProductoDAO dao;
+	private static UsuarioDAO daoUsuario;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -47,6 +50,7 @@ public class ProductosController extends HttpServlet {
 		super.init(config);
 
 		dao = ProductoDAO.getIntance();
+		daoUsuario = UsuarioDAO.getIntance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -134,6 +138,9 @@ public class ProductosController extends HttpServlet {
 		}
 
 		request.setAttribute("producto", producto);
+		
+		request.setAttribute("usuarios", daoUsuario.getAll());
+	
 		vistaSeleccionda = VIEW_FORM;
 
 	}
@@ -147,6 +154,7 @@ public class ProductosController extends HttpServlet {
 		String pDescuento = request.getParameter("descuento");
 		String pDescripcion = request.getParameter("descripcion");
 		String pImagen = request.getParameter("imagen");
+		String pId_usuario = request.getParameter("usuarioId");
 
 		Producto p = new Producto();
 			
@@ -167,6 +175,8 @@ public class ProductosController extends HttpServlet {
 			if ("0".equals(pId)) {
 
 				try {
+					
+					p.setUsuario(daoUsuario.getById(Integer.parseInt(pId_usuario)));
 
 					dao.create(p);
 
@@ -262,9 +272,18 @@ public class ProductosController extends HttpServlet {
 
 	}
 
-	private void listar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("productos", dao.getAll());
+		try {
+			
+			request.setAttribute("productos", dao.getAll());
+			
+		} catch (Exception e) {			
+			
+			LOG.error("Ha ocurrido un error a la hora de listar los productos: " + e);
+			
+		}
+		
 		vistaSeleccionda = VIEW_TABLA;
 
 	}

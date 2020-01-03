@@ -6,7 +6,6 @@ import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -14,31 +13,27 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
+
+import com.ipartek.formacion.supermercado.modelo.pojo.Rol;
+import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 /**
  * Servlet Filter implementation class SeguridadFilter
  */
-@WebFilter(dispatcherTypes = {
-				DispatcherType.REQUEST, 
-				DispatcherType.FORWARD, 
-				DispatcherType.INCLUDE, 
-				DispatcherType.ERROR
-		}
-					, urlPatterns = { "/seguridad/*" })
-public class SeguridadFilter implements Filter {
-	
-	private final static Logger LOG = Logger.getLogger(SeguridadFilter.class);
-	
-	
+@WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE,
+		DispatcherType.ERROR }, urlPatterns = { "/mipanel/*" })
+public class SeguridadFrontOfficeFilter implements Filter {
+
+	private final static Logger LOG = Logger.getLogger(SeguridadFrontOfficeFilter.class);
+
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		
+
 	}
-	
+
 	/**
 	 * @see Filter#destroy()
 	 */
@@ -49,22 +44,21 @@ public class SeguridadFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
 		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-		
+		HttpServletResponse resp = (HttpServletResponse) response;
+
 		/*
 		 * 
-		LOG.debug("RequestURL " + req.getRequestURL());
-		LOG.debug("RequestURI " + req.getRequestURI());
-		LOG.debug("HTTP Protocol " + req.getProtocol());
-		LOG.debug("Remote Address" + req.getRemoteAddr());
-		LOG.debug("Remote Host" + req.getRemoteHost());
-		LOG.debug("Navegador" + req.getHeader("User-Agent"));
-		
-		*/
-		
+		 * LOG.debug("RequestURL " + req.getRequestURL()); LOG.debug("RequestURI " +
+		 * req.getRequestURI()); LOG.debug("HTTP Protocol " + req.getProtocol());
+		 * LOG.debug("Remote Address" + req.getRemoteAddr()); LOG.debug("Remote Host" +
+		 * req.getRemoteHost()); LOG.debug("Navegador" + req.getHeader("User-Agent"));
+		 * 
+		 */
+
 //		Map<String, String[]> map = req.getParameterMap();
 //
 //		for (String key: map.keySet())
@@ -77,21 +71,24 @@ public class SeguridadFilter implements Filter {
 //            }
 //	           
 //	    }
-		
-		ServletContext sc = req.getServletContext();
-		
+
 		HttpSession session = req.getSession();
-		
-		if(session.getAttribute("usuarioLogeado") == null) 
-		{
-			LOG.warn("Intentan entrar si logearse");
+
+		Usuario uLogeado = (Usuario) session.getAttribute("usuarioLogeado");
+
+		if (uLogeado != null && uLogeado.getRol().getId() == Rol.ROL_USUARIO) {
 			
-		} else 
-		{
 			// dejamos continuar
 			// pass the request along the filter chain
-			chain.doFilter(request, response);		
+			chain.doFilter(request, response);
+
+		} else {
+			
+			LOG.warn("acceso denegado por seguridad " + uLogeado);
+			session.invalidate();
+			resp.sendRedirect( req.getContextPath() +  "/login.jsp");
+			
 		}
-		
+
 	}
 }

@@ -1,7 +1,6 @@
 package com.ipartek.formacion.supermercado.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

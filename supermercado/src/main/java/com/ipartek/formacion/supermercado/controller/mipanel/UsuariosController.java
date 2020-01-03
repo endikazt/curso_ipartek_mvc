@@ -1,4 +1,4 @@
-package com.ipartek.formacion.supermercado.controller;
+package com.ipartek.formacion.supermercado.controller.mipanel;
 
 import java.io.IOException;
 import java.util.Set;
@@ -17,23 +17,20 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
-import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
-import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 /**
  * Servlet implementation class ProductosController
  */
-@WebServlet("/seguridad/usuarios")
+@WebServlet("/mipanel/usuarios")
 public class UsuariosController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(UsuariosController.class);
-	private static final String VIEW_TABLA = "usuarios/index.jsp";
-	private static final String VIEW_FORM = "usuarios/formulario.jsp";
-	private static String vistaSeleccionda = VIEW_TABLA;
+	private static final String VIEW_DATOS = "usuarios/index.jsp";
 	private static UsuarioDAO dao;
+	private Usuario uLogeado;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -41,9 +38,7 @@ public class UsuariosController extends HttpServlet {
 	// Acciones
 
 	private static final String ACCION_LISTAR = "listar";
-	private static final String ACCION_FORMULARIO = "formulario";
 	private static final String ACCION_GUARDAR = "guardar"; // Crear y modificar
-	private static final String ACCION_ELIMINAR = "eliminar";
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -77,6 +72,8 @@ public class UsuariosController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String pAccion = request.getParameter("accion");
+		
+		uLogeado = (Usuario)request.getSession().getAttribute("usuarioLogeado");
 
 		try {
 
@@ -84,14 +81,8 @@ public class UsuariosController extends HttpServlet {
 			case ACCION_LISTAR:
 				listar(request, response);
 				break;
-			case ACCION_ELIMINAR:
-				eliminar(request, response);
-				break;
 			case ACCION_GUARDAR:
 				guardar(request, response);
-				break;
-			case ACCION_FORMULARIO:
-				formulario(request, response);
 				break;
 			default:
 				listar(request, response);
@@ -100,57 +91,21 @@ public class UsuariosController extends HttpServlet {
 
 		} catch (Exception e) {
 			
-			LOG.error("Ha ocurrido un error a la hora de proveer los datos necesarios: vistaSelecionada: " + vistaSeleccionda + ". ERROR: " + e);
+			LOG.error("Ha ocurrido un error a la hora de proveer los datos necesarios: " + e);
 
 		} finally {
 
-			request.getRequestDispatcher(vistaSeleccionda).forward(request, response);
+			request.getRequestDispatcher(VIEW_DATOS).forward(request, response);
 		}
-
-	}
-
-	private void formulario(HttpServletRequest request, HttpServletResponse response) {
-
-		Usuario usuario = new Usuario();
-
-		String pId = request.getParameter("id");
-
-		if (!"".equals(pId) && pId != null) {
-
-			try {
-
-				usuario = dao.getById(Integer.parseInt(pId));
-
-			} catch (NumberFormatException e) {
-
-				LOG.error("El ID pasado no es un numero. ERROR: " + e);
-				
-				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
-				
-			} catch (Exception e) {
-				
-				LOG.error("Error al convertir el string de pId en integer. ERROR: " + e);
-				
-				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
-			}
-
-		}
-
-		request.setAttribute("usuario", usuario);
-		vistaSeleccionda = VIEW_FORM;
 
 	}
 
 	private void guardar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String pId = request.getParameter("id");
-		String pNombre = request.getParameter("nombre");
 		String pPassword = request.getParameter("password");
 
-		Usuario user = new Usuario();
-		user.setId(Integer.parseInt(pId));
-		user.setNombre(pNombre);
+		Usuario user = uLogeado;
 		user.setPassword(pPassword);
 
 		Set<ConstraintViolation<Usuario>> validaciones = validator.validate(user);
@@ -161,31 +116,11 @@ public class UsuariosController extends HttpServlet {
 
 			request.setAttribute("usuario", user);
 
-			vistaSeleccionda = VIEW_FORM;
-
 		} else {
 
-			if ("0".equals(pId)) {
-
-				try {
-
-					dao.create(user);
-
-				} catch (Exception e) {
-
-					LOG.error("Error al crear un nuevo usuario. Datos del usuario: " + user.toString() + "\n ERROR: " + e);
-				}
-
-				request.setAttribute("mensajeAlerta", new Alerta("Producto agregado correctamente :)", Alerta.TIPO_SUCCESS));
-				this.listar(request, response);
-
-			} else {
-
 				try {
 					
-					user.setId(Integer.parseInt(pId));
-					
-					dao.update(Integer.parseInt(pId), user);
+					dao.update(user.getId(), user);
 					
 				} catch (NumberFormatException e) {
 					
@@ -206,8 +141,6 @@ public class UsuariosController extends HttpServlet {
 
 			}
 
-		}
-
 	}
 
 	private void mensajeValidacion(HttpServletRequest request, Set<ConstraintViolation<Usuario>> validaciones) {
@@ -227,51 +160,19 @@ public class UsuariosController extends HttpServlet {
 
 	}
 
-	private void eliminar(HttpServletRequest request, HttpServletResponse response) {
-
-		String pId = request.getParameter("id");
-
-		Alerta alerta = new Alerta();
-
-		if ((!"".equals(pId) && pId != null)) {
-
-			Usuario user = null;
-			try {
-				
-				user = dao.delete(Integer.parseInt(pId));
-				
-			} catch (MySQLIntegrityConstraintViolationException e1) {
-				
-				request.setAttribute("mensajeAlerta", new Alerta("No se puede eliminar un usuario con productos asociados >:(", Alerta.TIPO_DANGER));
-				
-				this.listar(request, response);
-				
-			} catch (Exception e) {
-				
-				LOG.error("El ID pasado no es un numero. ERROR: " + e);
-				
-				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
-			} 
-			alerta.setTexto("El usuario " + user.toString() + " ha sido eliminado con exito.");
-			alerta.setTipo(Alerta.TIPO_SUCCESS);
-
-		} else {
-
-			alerta.setTexto("Ha ocurrido un error a la hora de eliminar el usuario :(");
-			alerta.setTipo(Alerta.TIPO_DANGER);
-
-		}
-
-		request.setAttribute("mensajeAlerta", alerta);
-
-		this.listar(request, response);
-
-	}
-
 	private void listar(HttpServletRequest request, HttpServletResponse response) {
 
-		request.setAttribute("usuarios", dao.getAll());
-		vistaSeleccionda = VIEW_TABLA;
+		Usuario usuario = new Usuario();
+
+	
+		try {
+			usuario = dao.getById(uLogeado.getId());
+		} catch (Exception e) {
+			LOG.error("No se ha podido recuperar el usuario para listar sus datos. ERROR -> " + e);
+		}
+
+
+		request.setAttribute("usuario", usuario);
 
 	}
 

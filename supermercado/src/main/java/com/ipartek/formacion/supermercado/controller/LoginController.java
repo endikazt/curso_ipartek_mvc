@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Validation;
 
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
-import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
+import com.ipartek.formacion.supermercado.modelo.pojo.Rol;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 /**
@@ -73,13 +72,22 @@ public class LoginController extends HttpServlet {
 				session.setAttribute("usuarioLogeado", user);
 				session.setMaxInactiveInterval(-1); // 5 seg
 				
-				String base = request.getContextPath();
-				
 				mensajeAlerta.setTexto("¡Bienvenido " + user.getNombre() + "!");
 				mensajeAlerta.setTipo(Alerta.TIPO_SUCCESS);
 				
-				request.setAttribute("mensajeAlerta", mensajeAlerta);	
-				request.getRequestDispatcher("/seguridad/index.jsp").forward(request, response);	
+				if(user.getRol().getId() == Rol.ROL_ADMIN) {
+				
+					request.setAttribute("mensajeAlerta", mensajeAlerta);	
+					request.getRequestDispatcher("/seguridad/index.jsp").forward(request, response);
+				
+				}
+				
+				if(user.getRol().getId() == Rol.ROL_USUARIO) {
+					
+					request.setAttribute("mensajeAlerta", mensajeAlerta);	
+					request.getRequestDispatcher("/mipanel/index.jsp").forward(request, response);
+				
+				}
 				
 			} else {
 				
@@ -87,7 +95,7 @@ public class LoginController extends HttpServlet {
 				mensajeAlerta.setTipo(Alerta.TIPO_DANGER);
 				
 				request.setAttribute("mensajeAlerta", mensajeAlerta);	
-				request.getRequestDispatcher("login.jsp").forward(request, response);	
+				request.getRequestDispatcher("/login.jsp").forward(request, response);	
 			}
 		} catch (Exception e) {
 			LOG.error(e);

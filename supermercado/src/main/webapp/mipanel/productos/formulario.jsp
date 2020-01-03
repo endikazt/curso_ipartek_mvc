@@ -7,7 +7,7 @@
 	  <div class="row justify-content-center mb-5">
             <div class="col-6">
 
-                    <form action="seguridad/productos" method="post">
+                    <form action="mipanel/productos" method="post">
                     
                  		<input type="hidden" name="accion" value="guardar">
                  		<input type="hidden" id="id" name="id" value="${producto.id}">
@@ -74,15 +74,6 @@
                             <small id="nombreHelp" class="form-text text-muted">Imagen del producto</small>
                         </div>
                         
-                        <div class="form-group">		
-							<label>Usuario</label>
-							<select name="usuarioId" class="custom-select">
-								<c:forEach items="${usuarios}" var="u">
-									<option value="${u.id}"  ${(u.id eq producto.usuario.id)?"selected":""} >${u.nombre}</option>	
-								</c:forEach>
-							</select>
-						</div>
-                        
                         <c:choose>
                         	<c:when test="${producto.id > 0}">
                         		<button type="submit" class="btn btn-block btn-primary">Modificar producto</button> 
@@ -111,7 +102,7 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-		        <a href="seguridad/productos?accion=eliminar&id=${producto.id}" class="btn btn-primary">Eliminar</a>
+		        <a href="mipanel/productos?accion=eliminar&id=${producto.id}" class="btn btn-primary">Eliminar</a>
 		      </div>
 		    </div>
 		  </div>

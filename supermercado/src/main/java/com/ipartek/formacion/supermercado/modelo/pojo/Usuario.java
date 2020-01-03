@@ -16,25 +16,29 @@ public class Usuario {
 	@Size(min = 2, max = 50)
 	private String password;
 	
+	private Rol rol;
+	
 	public Usuario(int id, String nombre, String password) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.password = password;
+		this.rol = new Rol();
 	}
 	
-	public Usuario(String nombre, String password) {
-		super();
-		this.nombre = nombre;
-		this.password = password;
-	}
-
 	public Usuario() {
 		super();
 		this.id = 0;
 		this.nombre = "";
 		this.password = "";
+		this.rol = new Rol();
 	}
+	
+	public Usuario(String nombre, String password) {
+		this();
+		this.nombre = nombre;
+		this.password = password;
+	}	
 
 	public int getId() {
 		return id;
@@ -60,9 +64,17 @@ public class Usuario {
 		this.password = password;
 	}
 
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", password=" + password + "]";
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", password=" + password + ", rol=" + rol + "]";
 	}
 
 }

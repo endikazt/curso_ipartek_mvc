@@ -46,25 +46,43 @@
 		    </li>
 		    
 		    <c:if test="${not empty usuarioLogeado}">
+		    
+		    	<c:if test="${usuarioLogeado.rol.id eq 2}">
+		    	
+		    		<li class="nav-item dropdown active">
+					      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					        Productos
+					      </a>
+					      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					        <a class="dropdown-item" href="seguridad/productos?accion=listar">Listado productos</a>
+					        <a class="dropdown-item" href="seguridad/productos?accion=formulario">Nuevo producto</a>
+					      </div>
+					    </li>
+					    <li class="nav-item dropdown active">
+					      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					        Usuarios
+					      </a>
+					      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					        <a class="dropdown-item" href="seguridad/usuarios?accion=listar">Listado usuarios</a>
+					        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario">Nuevo usuario</a>
+					      </div>
+		    		</li>
+		        
+		   		</c:if> 
+		    	
+	    		<c:if test="${usuarioLogeado.rol.id eq 1}">
 	    	
-		    <li class="nav-item dropdown active">
-		      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		        Productos
-		      </a>
-		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		        <a class="dropdown-item" href="seguridad/productos?accion=listar">Listado productos</a>
-		        <a class="dropdown-item" href="seguridad/productos?accion=formulario">Nuevo producto</a>
-		      </div>
-		    </li>
-		    <li class="nav-item dropdown active">
-		      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		        Usuarios
-		      </a>
-		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		        <a class="dropdown-item" href="seguridad/usuarios?accion=listar">Listado usuarios</a>
-		        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario">Nuevo usuario</a>
-		      </div>
-		    </li>
+		    		<li class="nav-item dropdown active">
+				      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        Mis Productos
+				      </a>
+				      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				        <a class="dropdown-item" href="mipanel/productos?accion=listar">Mis productos</a>
+				        <a class="dropdown-item" href="mipanel/productos?accion=formulario">Nuevo producto</a>
+				      </div>
+					</li>
+	        
+	   			</c:if> 
 		        
 		    </c:if> 
 		  
@@ -78,16 +96,35 @@
 		  
 		  <c:if test="${not empty usuarioLogeado}">
 		  
-		  	<li class="nav-item dropdown">
-		      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		        ${usuarioLogeado.nombre}
-		      </a>
-		      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-		        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>
-		        <div class="dropdown-divider"></div>
-          		<a class="dropdown-item" href="logout">Cerrar sesion</a>
-		      </div>
-		    </li>
+		  	<c:if test="${usuarioLogeado.rol.id eq 2}">
+		  	
+			  	<li class="nav-item dropdown">
+			      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			        ${usuarioLogeado.nombre}
+			      </a>
+			      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+			        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>
+			        <div class="dropdown-divider"></div>
+	          		<a class="dropdown-item" href="logout">Cerrar sesion</a>
+			      </div>
+			    </li>
+		  	
+		  	</c:if>
+		  	
+		  	<c:if test="${usuarioLogeado.rol.id eq 1}">
+		  	
+			  	<li class="nav-item dropdown">
+			      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			        ${usuarioLogeado.nombre}
+			      </a>
+			      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+			        <a class="dropdown-item" href="mipanel/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>
+			        <div class="dropdown-divider"></div>
+	          		<a class="dropdown-item" href="logout">Cerrar sesion</a>
+			      </div>
+			    </li>
+		  	
+		  	</c:if>
 		  
 		  </c:if>
 		  

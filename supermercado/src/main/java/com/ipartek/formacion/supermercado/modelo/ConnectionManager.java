@@ -7,8 +7,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
-
 public class ConnectionManager {
 	
 	private final static Logger LOG = Logger.getLogger(ConnectionManager.class);

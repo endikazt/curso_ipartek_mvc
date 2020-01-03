@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.ConnectionManager;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+import com.ipartek.formacion.supermercado.modelo.pojo.Rol;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 public class UsuarioDAO implements IUsuarioDAO{
@@ -19,11 +20,11 @@ public class UsuarioDAO implements IUsuarioDAO{
 	
 	private final static Logger LOG = Logger.getLogger(UsuarioDAO.class);
 	
-	private static final String SQL_GET_ALL = "SELECT id, nombre, password FROM usuario ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, password FROM usuario WHERE id=?;";
+	private static final String SQL_GET_ALL = "SELECT id, nombre, password, id_rol FROM usuario ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, password, id_rol  FROM usuario WHERE id=?;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
-	private static final String SQL_EXISTE = " SELECT id, nombre, password FROM usuario WHERE nombre = ? AND password = ?;";
-	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
+	private static final String SQL_EXISTE = " SELECT id, nombre, password, id_rol FROM usuario WHERE nombre = ? AND password = ?;";
+	//private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
 	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, password) VALUES ( ? , ?);";
 	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, password = ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
@@ -222,7 +223,26 @@ public class UsuarioDAO implements IUsuarioDAO{
 		u.setNombre(rs.getString("nombre"));
 		u.setPassword(rs.getString("password"));
 		
+		int id_rol = rs.getInt("id_rol");
+		
+		Rol rol = new Rol();
+		
+		if(id_rol == 1) {
+			
+			rol.setId(Rol.ROL_ADMIN);
+			rol.setNombre("ADMIN");
+			
+		}
+		
+		u.setRol(rol);
+		
 		return u;
+	}
+
+	@Override
+	public ArrayList<Producto> getAllByUser(int id) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

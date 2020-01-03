@@ -21,10 +21,12 @@ public class ProductoDAO implements IDAO<Producto>{
 	
 	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto ORDER BY id DESC LIMIT 500;";
 	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto WHERE id=?;";
+	private static final String SQL_GET_ALL_BY_USER = "SELECT p.id, p.nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto p, usuario u " 
+													+ " WHERE p.id_usuario = u.id AND u.id = ? ORDER BY p.id DESC LIMIT 500;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
 	private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id = ? AND nombre = ?;";
 	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
-	private static final String SQL_INSERT = "INSERT INTO producto (nombre, descripcion, imagen, precio, descuento) VALUES ( ? , ?, ?, ?, ?);";
+	private static final String SQL_INSERT = "INSERT INTO producto (nombre, descripcion, imagen, precio, descuento, id_usuario) VALUES ( ? , ?, ?, ?, ?, ?);";
 	private static final String SQL_UPDATE = "UPDATE producto SET nombre= ?, descripcion= ?, imagen= ?, precio= ?, descuento= ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM producto WHERE id = ?;";
 	//private static final String SQL_DELETE_LOGICO = "UPDATE producto SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
@@ -61,6 +63,38 @@ public class ProductoDAO implements IDAO<Producto>{
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+		return lista;
+	}
+	
+	@Override
+	public ArrayList<Producto> getAllByUser(int id) throws Exception {
+		
+		ArrayList<Producto> lista = new ArrayList<Producto>();
+
+		try (
+				
+			Connection con = ConnectionManager.getConnection();
+				
+			PreparedStatement pst = con.prepareStatement(SQL_GET_ALL_BY_USER);
+					
+		) {
+			
+			pst.setInt(1, id);
+			
+			try (ResultSet rs = pst.executeQuery()) {
+				while (rs.next()) {
+					
+					Producto p = mapper(rs);
+					lista.add(p);
+
+				}
+			}
+
+		} catch (SQLException e) {
+			
+			LOG.error("Ha ocurrido un error a la hora de lista los productos por usuario: " + e);
 		}
 
 		return lista;
@@ -175,6 +209,7 @@ public class ProductoDAO implements IDAO<Producto>{
 			pst.setString(3, pojo.getImagen());
 			pst.setFloat(4, pojo.getPrecio());
 			pst.setInt(5, pojo.getDescuento());
+			pst.setInt(6, pojo.getUsuario().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {

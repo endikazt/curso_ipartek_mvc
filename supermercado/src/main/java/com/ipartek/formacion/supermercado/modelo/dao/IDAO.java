@@ -2,17 +2,30 @@ package com.ipartek.formacion.supermercado.modelo.dao;
 
 import java.util.ArrayList;
 
+import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
+
 public interface IDAO<P> {
 	
 	/**
 	 * 
 	 * Recupera todos los pojos de una base de datos
-	 * @param ArrayList<P>
+	 * @return ArrayList<P>
 	 * @throws Exception 
 	 * 
 	 */
 	
 	ArrayList<P> getAll() throws Exception;
+	
+	/**
+	 * 
+	 * Recupera todos los pojos de una base de datos que este creado pro el usuario correcpondiente
+	 * @param id del usuario
+	 * @return ArrayList<P>
+	 * @throws Exception 
+	 * 
+	 */
+	
+	ArrayList<Producto> getAllByUser(int id) throws Exception;
 	
 	/**
 	 * 
@@ -57,5 +70,6 @@ public interface IDAO<P> {
 	 */
 	
 	P create(P pojo) throws Exception;
+	
 
 }
