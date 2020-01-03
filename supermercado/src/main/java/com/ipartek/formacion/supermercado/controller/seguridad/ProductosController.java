@@ -17,10 +17,10 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
+import com.ipartek.formacion.supermercado.modelo.dao.CategoriaDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
-import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 /**
  * Servlet implementation class ProductosController
@@ -34,6 +34,7 @@ public class ProductosController extends HttpServlet {
 	private static String vistaSeleccionda = VIEW_TABLA;
 	private static ProductoDAO dao;
 	private static UsuarioDAO daoUsuario;
+	private static CategoriaDAO daoCategoria;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
@@ -51,6 +52,7 @@ public class ProductosController extends HttpServlet {
 
 		dao = ProductoDAO.getIntance();
 		daoUsuario = UsuarioDAO.getIntance();
+		daoCategoria = CategoriaDAO.getIntance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -140,6 +142,8 @@ public class ProductosController extends HttpServlet {
 		request.setAttribute("producto", producto);
 		
 		request.setAttribute("usuarios", daoUsuario.getAll());
+		
+		request.setAttribute("categorias", daoCategoria.getAll());
 	
 		vistaSeleccionda = VIEW_FORM;
 
@@ -155,6 +159,7 @@ public class ProductosController extends HttpServlet {
 		String pDescripcion = request.getParameter("descripcion");
 		String pImagen = request.getParameter("imagen");
 		String pId_usuario = request.getParameter("usuarioId");
+		String pCategoria = request.getParameter("categoriaId");
 
 		Producto p = new Producto();
 			
@@ -177,6 +182,8 @@ public class ProductosController extends HttpServlet {
 				try {
 					
 					p.setUsuario(daoUsuario.getById(Integer.parseInt(pId_usuario)));
+					
+					p.setCategoria(daoCategoria.getById(Integer.parseInt(pCategoria)));
 
 					dao.create(p);
 
@@ -193,6 +200,10 @@ public class ProductosController extends HttpServlet {
 				try {
 					
 					p.setId(Integer.parseInt(pId));
+					
+					p.setUsuario(daoUsuario.getById(Integer.parseInt(pId_usuario)));
+					
+					p.setCategoria(daoCategoria.getById(Integer.parseInt(pCategoria)));
 					
 					dao.update(Integer.parseInt(pId), p);
 					

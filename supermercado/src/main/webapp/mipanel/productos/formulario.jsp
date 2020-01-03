@@ -74,6 +74,15 @@
                             <small id="nombreHelp" class="form-text text-muted">Imagen del producto</small>
                         </div>
                         
+                        <div class="form-group">		
+							<label>Categoria</label>
+							<select name="categoriaId" class="custom-select">
+								<c:forEach items="${categorias}" var="c">
+									<option value="${c.id}"  ${(c.id eq producto.categoria.id)?"selected":""} >${c.nombre}</option>	
+								</c:forEach>
+							</select>
+						</div>
+                        
                         <c:choose>
                         	<c:when test="${producto.id > 0}">
                         		<button type="submit" class="btn btn-block btn-primary">Modificar producto</button> 

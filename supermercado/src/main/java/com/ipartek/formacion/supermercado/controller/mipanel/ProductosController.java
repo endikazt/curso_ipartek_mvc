@@ -17,6 +17,7 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
+import com.ipartek.formacion.supermercado.modelo.dao.CategoriaDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
@@ -32,6 +33,7 @@ public class ProductosController extends HttpServlet {
 	private static final String VIEW_FORM = "productos/formulario.jsp";
 	private static String vistaSeleccionda = VIEW_TABLA;
 	private static ProductoDAO dao;
+	private static CategoriaDAO daoCategorias;
 	private Usuario uLogeado;
 
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -49,6 +51,7 @@ public class ProductosController extends HttpServlet {
 		super.init(config);
 
 		dao = ProductoDAO.getIntance();
+		daoCategorias = CategoriaDAO.getIntance();
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}
@@ -138,6 +141,9 @@ public class ProductosController extends HttpServlet {
 		}
 
 		request.setAttribute("producto", producto);
+		
+		request.setAttribute("categorias", daoCategorias.getAll());
+		
 		vistaSeleccionda = VIEW_FORM;
 
 	}
@@ -151,6 +157,7 @@ public class ProductosController extends HttpServlet {
 		String pDescuento = request.getParameter("descuento");
 		String pDescripcion = request.getParameter("descripcion");
 		String pImagen = request.getParameter("imagen");
+		String pCategoria = request.getParameter("categoriaId");
 
 		Producto p = new Producto();
 			
@@ -168,11 +175,13 @@ public class ProductosController extends HttpServlet {
 
 		} else {
 
-			if ("0".equals(pId)) {
+			if ("0".equals(pId)) {                                      // Se comprueba que el valor que llega al controlador es igual a 0,
 
 				try {
 					
 					p.setUsuario(uLogeado);
+					
+					p.setCategoria(daoCategorias.getById(Integer.parseInt(pCategoria)));
 
 					dao.create(p);
 
@@ -182,13 +191,16 @@ public class ProductosController extends HttpServlet {
 				}
 
 				request.setAttribute("mensajeAlerta", new Alerta("Producto agregado correctamente :)", Alerta.TIPO_SUCCESS));
+				
 				this.listar(request, response);
 
-			} else {
+			} else {                                                       // exp
 
 				try {
 					
 					p.setId(Integer.parseInt(pId));
+					
+					p.setCategoria(daoCategorias.getById(Integer.parseInt(pCategoria)));
 					
 					Producto productoExixte = dao.getById(Integer.parseInt(pId));
 					
@@ -249,7 +261,7 @@ public class ProductosController extends HttpServlet {
 
 		Alerta alerta = new Alerta();
 
-		if ((!"".equals(pId) && pId != null)) {
+		if ((!"".equals(pId) && pId != null)) {					// Se comprueba que el valor que llega al controlador no es ni vacio ni null
 
 			Producto p = null;
 			try {	
@@ -318,7 +330,7 @@ public class ProductosController extends HttpServlet {
 		resul.setDescripcion(pDescripcion);
 		resul.setImagen(pImagen);
 
-		try {
+		try { 								// Control del precio a la hora de devolver datos al formulario
 			
 			resul.setPrecio(Float.parseFloat(pPrecio));
 			
@@ -330,7 +342,7 @@ public class ProductosController extends HttpServlet {
 			
 		}
 
-		try {
+		try { 							 // Control del descuento a la hora de devolver datos al formulario
 			
 			resul.setDescuento(Integer.parseInt(pDescuento));
 			

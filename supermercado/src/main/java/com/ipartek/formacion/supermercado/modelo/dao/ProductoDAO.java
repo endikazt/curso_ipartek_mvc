@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.ConnectionManager;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
-import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 
 public class ProductoDAO implements IDAO<Producto>{
 	
@@ -19,15 +18,15 @@ public class ProductoDAO implements IDAO<Producto>{
 	
 	private final static Logger LOG = Logger.getLogger(ProductoDAO.class);
 	
-	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto WHERE id=?;";
-	private static final String SQL_GET_ALL_BY_USER = "SELECT p.id, p.nombre, descripcion, imagen, precio, descuento, id_usuario FROM producto p, usuario u " 
+	private static final String SQL_GET_ALL = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario, id_categoria FROM producto ORDER BY id DESC LIMIT 500;";
+	private static final String SQL_GET_BY_ID = "SELECT id, nombre, descripcion, imagen, precio, descuento, id_usuario, id_categoria  FROM producto WHERE id=?;";
+	private static final String SQL_GET_ALL_BY_USER = "SELECT p.id, p.nombre, descripcion, imagen, precio, descuento, id_usuario, id_categoria  FROM producto p, usuario u " 
 													+ " WHERE p.id_usuario = u.id AND u.id = ? ORDER BY p.id DESC LIMIT 500;";
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
-	private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id = ? AND nombre = ?;";
-	private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
-	private static final String SQL_INSERT = "INSERT INTO producto (nombre, descripcion, imagen, precio, descuento, id_usuario) VALUES ( ? , ?, ?, ?, ?, ?);";
-	private static final String SQL_UPDATE = "UPDATE producto SET nombre= ?, descripcion= ?, imagen= ?, precio= ?, descuento= ? WHERE id = ?;";
+	//private static final String SQL_EXISTE = " SELECT id, nombre, descripcion, imagen, precio, descuento FROM producto WHERE id = ? AND nombre = ?;";
+	//private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
+	private static final String SQL_INSERT = "INSERT INTO producto (nombre, descripcion, imagen, precio, descuento, id_usuario, id_categoria) VALUES ( ? , ?, ?, ?, ?, ?, ?);";
+	private static final String SQL_UPDATE = "UPDATE producto SET nombre= ?, descripcion= ?, imagen= ?, precio= ?, descuento= ?, id_usuario = ?, id_categoria = ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM producto WHERE id = ?;";
 	//private static final String SQL_DELETE_LOGICO = "UPDATE producto SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
 	
@@ -62,7 +61,7 @@ public class ProductoDAO implements IDAO<Producto>{
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 
 		return lista;
@@ -122,7 +121,7 @@ public class ProductoDAO implements IDAO<Producto>{
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 		
 		return resul;
@@ -175,7 +174,9 @@ public class ProductoDAO implements IDAO<Producto>{
 			pst.setString(3, pojo.getImagen());
 			pst.setFloat(4, pojo.getPrecio());
 			pst.setInt(5, pojo.getDescuento());
-			pst.setInt(6, id);
+			pst.setInt(6, pojo.getUsuario().getId());
+			pst.setInt(7, pojo.getCategoria().getId());
+			pst.setInt(8, id);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -210,6 +211,7 @@ public class ProductoDAO implements IDAO<Producto>{
 			pst.setFloat(4, pojo.getPrecio());
 			pst.setInt(5, pojo.getDescuento());
 			pst.setInt(6, pojo.getUsuario().getId());
+			pst.setInt(7, pojo.getCategoria().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -230,6 +232,8 @@ public class ProductoDAO implements IDAO<Producto>{
 		
 		UsuarioDAO daoUsuario = UsuarioDAO.getIntance();
 		
+		CategoriaDAO daoCategoria = CategoriaDAO.getIntance();
+		
 		Producto p = new Producto();
 		
 		p.setId(rs.getInt("id"));
@@ -239,6 +243,8 @@ public class ProductoDAO implements IDAO<Producto>{
 		p.setPrecio(Float.parseFloat(rs.getString("precio")));
 		p.setDescuento(Integer.parseInt(rs.getString("descuento")));
 		p.setUsuario(daoUsuario.getById(Integer.parseInt(rs.getString("id_usuario"))));
+		
+		p.setCategoria(daoCategoria.getById(rs.getInt("id_categoria")));
 		
 		return p;
 	}

@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 /**
  * Servlet implementation class ProductosController

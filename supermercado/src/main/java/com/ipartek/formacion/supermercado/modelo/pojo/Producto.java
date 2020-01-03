@@ -37,6 +37,8 @@ public class Producto {
 	
 	private Usuario usuario;
 	
+	private Categoria categoria;
+	
 	public Producto() {
 		super();
 		this.id = 0;
@@ -46,6 +48,7 @@ public class Producto {
 		this.descripcion = "";
 		this.precio = 0;
 		this.usuario = new Usuario();
+		this.categoria = new Categoria();
 	}
 
 
@@ -130,6 +133,15 @@ public class Producto {
 		this.usuario = usuario;
 	}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 
 	public float calcularPrecioDescuento() {
 		
@@ -140,11 +152,11 @@ public class Producto {
 		return precioDescuento;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Producto [id=" + id + ", descuento=" + descuento + ", nombre=" + nombre + ", imagen=" + imagen
-				+ ", descripcion=" + descripcion + ", precio=" + precio + "]";
+		return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", imagen=" + imagen
+				+ ", precio=" + precio + ", descuento=" + descuento + ", usuario=" + usuario + ", categoria="
+				+ categoria + "]";
 	}
-	
+
 }
