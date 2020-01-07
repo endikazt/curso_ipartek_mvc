@@ -17,6 +17,7 @@ import javax.validation.ValidatorFactory;
 import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
+import com.ipartek.formacion.supermercado.modelo.ProductoException;
 import com.ipartek.formacion.supermercado.modelo.dao.CategoriaDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
@@ -119,11 +120,11 @@ public class ProductosController extends HttpServlet {
 
 		String pId = request.getParameter("id");
 
-		if (!"".equals(pId) && pId != null) {
+		if (!"".equals(pId) && pId != null) { 				// Comprobamos que el valor del id de producto no es vacio ni null
 
 			try {
 
-				producto = dao.getById(Integer.parseInt(pId));
+				producto = dao.getByIdByUser(Integer.parseInt(pId), uLogeado.getId());
 
 			} catch (NumberFormatException e) {
 
@@ -136,6 +137,13 @@ public class ProductosController extends HttpServlet {
 				LOG.error("Error al convertir el string de pId en integer. ERROR: " + e);
 				
 				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
+				
+			} catch (ProductoException e) {
+				
+				request.setAttribute("mensajeAlerta", new Alerta("Hey, no puedes ver la informacion de un producto que no te corresponde >:(", Alerta.TIPO_DANGER));
+				
+				LOG.error(ProductoException.EXCEPTION_UNAUTORIZED);
+				
 			}
 
 		}
@@ -175,7 +183,7 @@ public class ProductosController extends HttpServlet {
 
 		} else {
 
-			if ("0".equals(pId)) {                                      // Se comprueba que el valor que llega al controlador es igual a 0,
+			if ("0".equals(pId)) {                                      // Se comprueba que el valor que llega al controlador es igual a 0, en caso afirmativo se crea el producto
 
 				try {
 					
@@ -194,7 +202,7 @@ public class ProductosController extends HttpServlet {
 				
 				this.listar(request, response);
 
-			} else {                                                       // exp
+			} else {                                                   // Si el valor es mayor que 0 comienza el proceso de modificacion del producto
 
 				try {
 					
@@ -202,19 +210,13 @@ public class ProductosController extends HttpServlet {
 					
 					p.setCategoria(daoCategorias.getById(Integer.parseInt(pCategoria)));
 					
-					Producto productoExixte = dao.getById(Integer.parseInt(pId));
+					Producto productoExixte = dao.getByIdByUser(Integer.parseInt(pId), uLogeado.getId());
 					
-					if(productoExixte.getUsuario().getId() == uLogeado.getId()) {
+					if(productoExixte != null) {
 						
 						dao.update(Integer.parseInt(pId), p);
 						
 						request.setAttribute("mensajeAlerta", new Alerta("Producto modificado correctamente :)", Alerta.TIPO_SUCCESS));
-						
-						
-					} else {
-						
-						request.setAttribute("mensajeAlerta", new Alerta("Hey, no puedes modificar un producto que no te corresponde >:(", Alerta.TIPO_DANGER));
-						
 					}
 					
 				} catch (NumberFormatException e) {
@@ -228,6 +230,13 @@ public class ProductosController extends HttpServlet {
 					LOG.error("Error al actualizar producto. Datos producto: " + p.toString() + "\n ERROR: " + e);
 					
 					request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el adminitrador.", Alerta.TIPO_DANGER));
+					
+				} catch (ProductoException e) {
+					
+					request.setAttribute("mensajeAlerta", new Alerta("Hey, no puedes modificar un producto que no te corresponde >:(", Alerta.TIPO_DANGER));
+					
+					LOG.error(ProductoException.EXCEPTION_UNAUTORIZED);
+					
 				}
 				
 				this.listar(request, response);
@@ -266,30 +275,34 @@ public class ProductosController extends HttpServlet {
 			Producto p = null;
 			try {	
 				
-				if(dao.getById(Integer.parseInt(pId)).getUsuario().getId() == uLogeado.getId()) {
+				if(dao.getByIdByUser(Integer.parseInt(pId), uLogeado.getId()) != null) {
 					
 					p = dao.delete(Integer.parseInt(pId));
 					
-				} else {
+					alerta.setTexto("El producto " + p.toString() + " ha sido eliminado con exito.");
+					alerta.setTipo(Alerta.TIPO_SUCCESS);
 					
-					alerta.setTexto("Hey, no puedes eliminar un producto que no te corresponde >:(");
-					alerta.setTipo(Alerta.TIPO_DANGER);
-					
-					request.setAttribute("mensajeAlerta", alerta);
-					
-					this.listar(request, response);
-					
-				}	
+				}
 				
 			} catch (Exception e) {
 				
 				LOG.error("El ID pasado no es un numero. ERROR: " + e);
 				
-				request.setAttribute("mensajeAlerta", new Alerta("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.", Alerta.TIPO_DANGER));
+				alerta.setTexto("Ha ocurrido un error a la hora de procesar la solicitud. Contacte con el administrador.");
+				alerta.setTipo(Alerta.TIPO_DANGER);
+				
+				request.setAttribute("mensajeAlerta", alerta);
+				
+			} catch (ProductoException e) {
+				
+				LOG.error(ProductoException.EXCEPTION_UNAUTORIZED);
+				
+				alerta.setTexto("Hey, no puedes eliminar un producto que no te corresponde >:(");
+				alerta.setTipo(Alerta.TIPO_DANGER);
+				
+				request.setAttribute("mensajeAlerta", alerta);
+				
 			}
-
-			alerta.setTexto("El producto " + p.toString() + " ha sido eliminado con exito.");
-			alerta.setTipo(Alerta.TIPO_SUCCESS);
 
 		} else {
 
