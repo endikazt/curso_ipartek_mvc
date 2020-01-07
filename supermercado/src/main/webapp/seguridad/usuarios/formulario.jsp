@@ -36,6 +36,14 @@
                             <small id="nombreHelp" class="form-text text-muted">Contraseña del usuario</small>
                         </div>
                         
+                         <div class="form-group">		
+							<label>Rol</label>
+							<select name="rolId" class="custom-select">
+								<option value="1"  ${(1 eq usuario.rol.id)?"selected":""} >ADMIN</option>
+								<option value="2"  ${(2 eq usuario.rol.id)?"selected":""} >USUARIO</option>
+							</select>
+						</div>
+                        
                         <c:choose>
                         	<c:when test="${usuario.id > 0}">
                         		<button type="submit" class="btn btn-block btn-primary">Modificar usuario</button> 

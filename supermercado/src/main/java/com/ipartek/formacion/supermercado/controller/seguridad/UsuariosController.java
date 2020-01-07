@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.dao.UsuarioDAO;
+import com.ipartek.formacion.supermercado.modelo.pojo.Rol;
 import com.ipartek.formacion.supermercado.modelo.pojo.Usuario;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -145,11 +146,21 @@ public class UsuariosController extends HttpServlet {
 		String pId = request.getParameter("id");
 		String pNombre = request.getParameter("nombre");
 		String pPassword = request.getParameter("password");
+		String pRol = request.getParameter("rolId");
 
 		Usuario user = new Usuario();
 		user.setId(Integer.parseInt(pId));
 		user.setNombre(pNombre);
 		user.setPassword(pPassword);
+		
+		Rol rol = new Rol();
+		rol.setId(Integer.parseInt(pRol));
+		
+		if(Integer.parseInt(pRol) == Rol.ROL_ADMIN) {
+			
+			rol.setNombre("ADMIN");
+			
+		}
 
 		Set<ConstraintViolation<Usuario>> validaciones = validator.validate(user);
 

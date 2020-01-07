@@ -25,8 +25,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 	//private static final String SQL_GET_ALL_BY_NOMBRE = "SELECT nombre FROM producto ORDER BY u.nombre ASC LIMIT 500;";
 	private static final String SQL_EXISTE = " SELECT id, nombre, password, id_rol FROM usuario WHERE nombre = ? AND password = ?;";
 	//private static final String SQL_EXISTE_NOMBRE = " SELECT nombre FROM producto WHERE nombre = ?;";
-	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, password) VALUES ( ? , ?);";
-	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, password = ? WHERE id = ?;";
+	private static final String SQL_INSERT = "INSERT INTO usuario (nombre, password, id_rol) VALUES ( ? , ?, ?);";
+	private static final String SQL_UPDATE = "UPDATE usuario SET nombre= ?, password = ?, id_rol = ? WHERE id = ?;";
 	private static final String SQL_DELETE = "DELETE FROM usuario WHERE id = ?;";
 	//private static final String SQL_DELETE_LOGICO = "UPDATE producto SET fecha_eliminacion = CURRENT_TIMESTAMP() WHERE id = ?;";
 	
@@ -139,7 +139,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getPassword());
-			pst.setInt(3, id);
+			pst.setInt(3, pojo.getRol().getId());
+			pst.setInt(4, id);
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
@@ -170,6 +171,7 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 			pst.setString(1, pojo.getNombre());
 			pst.setString(2, pojo.getPassword());
+			pst.setInt(3, pojo.getRol().getId());
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {

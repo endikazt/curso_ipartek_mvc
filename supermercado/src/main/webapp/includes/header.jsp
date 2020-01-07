@@ -47,7 +47,7 @@
 		    
 		    <c:if test="${not empty usuarioLogeado}">
 		    
-		    	<c:if test="${usuarioLogeado.rol.id eq 2}">
+		    	<c:if test="${usuarioLogeado.rol.id eq 1}">
 		    	
 		    		<li class="nav-item dropdown active">
 				      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,7 +79,7 @@
 		        
 		   		</c:if> 
 		    	
-	    		<c:if test="${usuarioLogeado.rol.id eq 1}">
+	    		<c:if test="${usuarioLogeado.rol.id eq 2}">
 	    	
 		    		<li class="nav-item dropdown active">
 				      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,18 +98,18 @@
 		  <c:if test="${empty usuarioLogeado}">
 
 		  	 <li class="nav-item ml-2">
-			    <a class="btn btn-outline-primary my-2 my-sm-0" href="login.jsp">Login</a>
+			    <a class="btn btn-outline-primary my-2 my-sm-0" href="login.jsp"><i class="fas fa-user mr-1"></i> Login</a>
 		    </li>
 		  
 		  </c:if>
 		  
 		  <c:if test="${not empty usuarioLogeado}">
 		  
-		  	<c:if test="${usuarioLogeado.rol.id eq 2}">
+		  	<c:if test="${usuarioLogeado.rol.id eq 1}">
 		  	
 			  	<li class="nav-item dropdown ml-2">
 			      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			        ${usuarioLogeado.nombre}
+			          <i class="fas fa-user mr-1"></i> ${usuarioLogeado.nombre}
 			      </a>
 			      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 			        <a class="dropdown-item" href="seguridad/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>
@@ -120,11 +120,11 @@
 		  	
 		  	</c:if>
 		  	
-		  	<c:if test="${usuarioLogeado.rol.id eq 1}">
+		  	<c:if test="${usuarioLogeado.rol.id eq 2}">
 		  	
-			  	<li class="nav-item dropdown">
+			  	<li class="nav-item dropdown ml-2">
 			      <a class="btn btn-outline-primary my-2 my-sm-0 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			        ${usuarioLogeado.nombre}
+			        <i class="fas fa-user mr-1"></i> ${usuarioLogeado.nombre}
 			      </a>
 			      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 			        <a class="dropdown-item" href="mipanel/usuarios?accion=formulario&id=${usuarioLogeado.id}">Perfil</a>

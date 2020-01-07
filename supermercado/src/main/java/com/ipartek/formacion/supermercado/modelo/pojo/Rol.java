@@ -2,8 +2,8 @@ package com.ipartek.formacion.supermercado.modelo.pojo;
 
 public class Rol {
 	
-	public static final int ROL_USUARIO = 1;
-	public static final int ROL_ADMIN   = 2;
+	public static final int ROL_ADMIN   = 1;
+	public static final int ROL_USUARIO = 2;
 	
 	private int id;
 	private String nombre;
