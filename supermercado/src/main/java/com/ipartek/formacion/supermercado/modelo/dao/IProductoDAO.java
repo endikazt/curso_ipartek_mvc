@@ -19,6 +19,27 @@ public interface IProductoDAO extends IDAO<Producto>{
 	
 	/**
 	 * 
+	 * Lista de productos por un categoria 
+	 * @param id del categoria
+	 * @return ArrayList<Producto> lista inicializada en caso de que no tenga productos
+	 * 
+	 */
+
+	public ArrayList<Producto> getAllByCategoria(int id);
+	
+	/**
+	 * 
+	 * Lista de productos por un categoria y producto de busqueda
+	 * @param id del categoria
+	 * @param producto a buscar
+	 * @return ArrayList<Producto> lista inicializada en caso de que no tenga productos
+	 * 
+	 */
+
+	public ArrayList<Producto> getAllByCategoriaAndSearchParam(int id, String searchParam);
+	
+	/**
+	 * 
 	 * Recupera un producto de un usuario concreto
 	 * @param id del producto
 	 * @param id del usuario

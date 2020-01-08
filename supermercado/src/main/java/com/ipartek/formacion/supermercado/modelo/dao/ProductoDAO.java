@@ -1,5 +1,6 @@
 package com.ipartek.formacion.supermercado.modelo.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -361,6 +362,67 @@ public class ProductoDAO implements IProductoDAO{
 		p.setCategoria(daoCategoria.getById(rs.getInt("id_categoria")));
 		
 		return p;
+	}
+
+	@Override
+	public ArrayList<Producto> getAllByCategoriaAndSearchParam(int id, String searchParam) {
+		ArrayList<Producto> lista = new ArrayList<Producto>();
+		
+		try (			
+				Connection con = ConnectionManager.getConnection();				
+				CallableStatement cs = con.prepareCall("{CALL pa_producto_getbycategoriaandsearchparam(?,?)}");
+						
+			) {
+			
+			LOG.debug(cs);
+
+			cs.setInt(1, id);
+			cs.setString(2, searchParam);
+
+			try (ResultSet rs = cs.executeQuery()) {
+				while (rs.next()) {
+					
+					Producto p = mapper(rs);
+					lista.add(p);
+
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public ArrayList<Producto> getAllByCategoria(int id) {
+		ArrayList<Producto> lista = new ArrayList<Producto>();
+		
+		try (			
+				Connection con = ConnectionManager.getConnection();				
+				CallableStatement cs = con.prepareCall("{CALL pa_producto_getallbycategoria(?)}");
+						
+			) {
+			
+			LOG.debug(cs);
+
+			cs.setInt(1, id);
+
+			try (ResultSet rs = cs.executeQuery()) {
+				while (rs.next()) {
+					
+					Producto p = mapper(rs);
+					lista.add(p);
+
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+		
+		return lista;
 	}
 
 }

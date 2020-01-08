@@ -1,8 +1,15 @@
 package com.ipartek.formacion.supermercado.modelo.pojo;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Categoria {
 	
 	private int id;
+	
+	@NotEmpty
+	@Size(min = 1, max = 100)
 	private String nombre;
 	
 	public Categoria(int id, String nombre) {

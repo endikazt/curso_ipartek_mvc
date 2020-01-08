@@ -12,9 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.supermercado.modelo.Alerta;
 import com.ipartek.formacion.supermercado.modelo.ConnectionManager;
+import com.ipartek.formacion.supermercado.modelo.dao.CategoriaDAO;
 import com.ipartek.formacion.supermercado.modelo.dao.ProductoDAO;
+import com.ipartek.formacion.supermercado.modelo.pojo.Categoria;
 import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 
 /**
@@ -23,7 +27,9 @@ import com.ipartek.formacion.supermercado.modelo.pojo.Producto;
 @WebServlet( {"/inicio", "/inicio/"} )
 public class InicioController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final static Logger LOG = Logger.getLogger(InicioController.class);
 	private static ProductoDAO dao;
+	private static CategoriaDAO daoCategoria;
 	
 	
 	@Override
@@ -31,6 +37,7 @@ public class InicioController extends HttpServlet {
 		super.init(config);
 		
 		dao = ProductoDAO.getIntance();
+		daoCategoria = CategoriaDAO.getIntance();
 	} 
 	
 	@Override
@@ -65,17 +72,86 @@ public class InicioController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//TODO llamar al DAO de la capa modelo
+		String pCategoria = request.getParameter("categoriaId");
+		String pProducto = request.getParameter("producto");
+		String pAccion = request.getParameter("accion");
+		
 		ArrayList<Producto> productos = null;
-		try {
-			productos = dao.getAll();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		ArrayList<Categoria> categorias = null;
+		
+		LOG.debug(pCategoria + " " + pProducto + " " + pAccion);
+		
+		Alerta alerta = new Alerta();
+		
+		if(pAccion == null) {
+			
+			try {
+				productos = dao.getAll();
+				categorias = daoCategoria.getAll();
+			} catch (Exception e) {
+				LOG.error(e);
+			}
+			
+			alerta.setTexto("Las mejores ofertas para ti.");
+			alerta.setTipo(Alerta.TIPO_PRIMARY);
+			
+		} else {
+			
+			if(!pProducto.trim().equals("") && pProducto != null ) {	
+				
+				LOG.debug("ENTRANDO A LA PARTE DE OBETENER TODOS POR PARAM");
+				
+				try {
+					
+					productos = dao.getAllByCategoriaAndSearchParam(Integer.parseInt(pCategoria), pProducto);
+					
+					LOG.debug(productos);
+					
+					categorias = daoCategoria.getAll();
+					
+				} catch (NumberFormatException e) {
+					
+					alerta.setTexto("Ha ocurrido un error al procesar la solicitud. Intentelo de nuevo.");
+					alerta.setTipo(Alerta.TIPO_DANGER);
+					
+					try {
+						productos = dao.getAll();
+						categorias = daoCategoria.getAll();
+					} catch (Exception e1) {
+						LOG.error(e);
+					}
+				}
+				
+				
+			} else {
+				
+				LOG.debug("ENTRANDO A LA PARTE DE OBETENER TODOS POR CATEGORIA");
+				
+				
+				try {
+					productos = dao.getAllByCategoria(Integer.parseInt(pCategoria));
+					categorias = daoCategoria.getAll();
+				} catch (NumberFormatException e) {
+					
+					alerta.setTexto("Ha ocurrido un error al procesar la solicitud. Intentelo de nuevo.");
+					alerta.setTipo(Alerta.TIPO_DANGER);
+					
+					try {
+						productos = dao.getAll();
+						categorias = daoCategoria.getAll();
+					} catch (Exception e1) {
+						LOG.error(e);
+					}
+				}
+				
+				
+			}
+
 		}
 		
 		request.setAttribute("productos", productos);
-		request.setAttribute("mensajeAlerta", new Alerta("Las mejores ofertas para ti.", Alerta.TIPO_PRIMARY));
+		request.setAttribute("categorias", categorias);
+		request.setAttribute("mensajeAlerta", alerta);
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 		
 	}

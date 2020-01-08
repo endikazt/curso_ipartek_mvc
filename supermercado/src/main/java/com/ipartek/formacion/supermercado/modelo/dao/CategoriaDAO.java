@@ -1,10 +1,9 @@
 package com.ipartek.formacion.supermercado.modelo.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -19,11 +18,12 @@ public class CategoriaDAO implements IDAO<Categoria>{
 	
 	private final static Logger LOG = Logger.getLogger(CategoriaDAO.class);
 	
-	private static final String SQL_GET_ALL = "SELECT id, nombre FROM categoria ORDER BY id DESC LIMIT 500;";
-	private static final String SQL_GET_BY_ID = "SELECT id, nombre FROM categoria WHERE id=?;";
-	private static final String SQL_INSERT = "INSERT INTO categoria (nombre) VALUES (?);";
-	private static final String SQL_UPDATE = "UPDATE categoria SET nombre= ? WHERE id = ?;";
-	private static final String SQL_DELETE = "DELETE FROM categoria WHERE id = ?;";
+	// NO hace falta usar la sql porque ya estamos usando un procedure para que haga lo mismo
+	//private static final String SQL_GET_ALL = "SELECT id, nombre FROM categoria ORDER BY id DESC LIMIT 500;";
+	//private static final String SQL_GET_BY_ID = "SELECT id, nombre FROM categoria WHERE id=?;";
+	//private static final String SQL_INSERT = "INSERT INTO categoria (nombre) VALUES (?);";
+	//private static final String SQL_UPDATE = "UPDATE categoria SET nombre= ? WHERE id = ?;";
+	//private static final String SQL_DELETE = "DELETE FROM categoria WHERE id = ?;";
 	
 	private CategoriaDAO() {
 		super();		
@@ -42,17 +42,27 @@ public class CategoriaDAO implements IDAO<Categoria>{
 	@Override
 	public ArrayList<Categoria> getAll() {
 		
+		LOG.trace("Recuperando todas las categorias de la base de datos...");
+		
 		ArrayList<Categoria> lista = new ArrayList<Categoria>();
 
 		try (Connection con = ConnectionManager.getConnection();
-				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
-				ResultSet rs = pst.executeQuery()) {
-
-			while (rs.next()) {
 				
-				Categoria c = mapper(rs);
-				lista.add(c);
+			CallableStatement cs = con.prepareCall("{CALL pa_categoria_getall()}");
+				
+			){
+		
+			LOG.debug(cs);
+				
+			try (ResultSet rs = cs.executeQuery();) {
+				
+				while (rs.next()) {
+					
+					Categoria c = mapper(rs);
+					lista.add(c);
 
+				}
+				
 			}
 
 		} catch (Exception e) {
@@ -69,13 +79,13 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		
 		try (			
 				Connection con = ConnectionManager.getConnection();				
-				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID);
+				CallableStatement cs = con.prepareCall("{CALL pa_categoria_getbyid(?)}");
 						
 			) {
 
-			pst.setInt(1, id);
+			cs.setInt(1, id);
 
-			try (ResultSet rs = pst.executeQuery()) {
+			try (ResultSet rs = cs.executeQuery()) {
 				if (rs.next()) {
 					
 					resul = mapper(rs);
@@ -98,13 +108,13 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		try (
 				
 			Connection con = ConnectionManager.getConnection();
-			PreparedStatement pst = con.prepareStatement(SQL_DELETE);
+			CallableStatement cs = con.prepareCall("{CALL pa_categoria_delete(?)}");
 				
 		) {
 
-			pst.setInt(1, id);
+			cs.setInt(1, id);
 			
-			int affetedRows = pst.executeUpdate();
+			int affetedRows = cs.executeUpdate();
 			if (affetedRows == 1) {
 				
 				LOG.info("Eliminacion completada. Producto = " + resul.toString());
@@ -128,14 +138,14 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		try (
 				
 			Connection con = ConnectionManager.getConnection();
-			PreparedStatement pst = con.prepareStatement(SQL_UPDATE);		
+			CallableStatement cs = con.prepareCall("{CALL pa_categoria_update(?,?)}");		
 				
 		) {
 			
-			pst.setString(1, pojo.getNombre());
-			pst.setInt(2, id);
+			cs.setInt(1, id);
+			cs.setString(2, pojo.getNombre());
 
-			int affectedRows = pst.executeUpdate();
+			int affectedRows = cs.executeUpdate();
 			if (affectedRows == 1) {
 				
 				resul = this.getById(id);
@@ -155,24 +165,32 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		
 		Categoria resul = null;
 		
+		LOG.trace("Insertar nueva categoria: " + pojo);
+		
 		try (
 				
 			Connection con = ConnectionManager.getConnection();
-			PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+			CallableStatement cs = con.prepareCall("{CALL pa_categoria_insert(?,?)}");
 					
 		) {
+			
+			//Parametro de entrada
 
-			pst.setString(1, pojo.getNombre());
-
-			int affectedRows = pst.executeUpdate();
-			if (affectedRows == 1) {
-				// conseguimos el ID que acabamos de crear
-				ResultSet rs = pst.getGeneratedKeys();
-				if (rs.next()) {
-					pojo.setId(rs.getInt(1));
-				}
-
-			}
+			cs.setString(1, pojo.getNombre());
+			
+			//Parametro de salida
+			
+			cs.registerOutParameter(2, java.sql.Types.INTEGER);
+			
+			LOG.debug(cs);
+			
+			cs.executeUpdate();
+			
+			// Una cez ejecutado recogemo el paraemtro de salida
+			
+			resul = pojo;
+			
+			resul.setId(cs.getInt(2));
 
 		}
 
