@@ -116,7 +116,10 @@ public class InicioController extends HttpServlet {
 						productos = dao.getAll();
 						categorias = daoCategoria.getAll();
 					} catch (Exception e1) {
+						
 						LOG.error(e);
+						
+						LOG.info("Ha ocurrido un error. Se listan todos los productos.");
 					}
 				}
 				
@@ -140,6 +143,8 @@ public class InicioController extends HttpServlet {
 						categorias = daoCategoria.getAll();
 					} catch (Exception e1) {
 						LOG.error(e);
+						
+						LOG.info("Ha ocurrido un error. Se listan todos los productos.");
 					}
 				}
 				

@@ -51,8 +51,6 @@ public class CategoriaDAO implements IDAO<Categoria>{
 			CallableStatement cs = con.prepareCall("{CALL pa_categoria_getall()}");
 				
 			){
-		
-			LOG.debug(cs);
 				
 			try (ResultSet rs = cs.executeQuery();) {
 				

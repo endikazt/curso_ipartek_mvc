@@ -409,8 +409,6 @@ public class ProductoDAO implements IProductoDAO{
 				CallableStatement cs = con.prepareCall("{CALL pa_producto_getbycategoriaandsearchparam(?,?)}");
 						
 			) {
-			
-			LOG.debug(cs);
 
 			cs.setInt(1, id);
 			cs.setString(2, searchParam);
@@ -443,8 +441,6 @@ public class ProductoDAO implements IProductoDAO{
 				CallableStatement cs = con.prepareCall("{CALL pa_producto_getallbycategoria(?)}");
 						
 			) {
-			
-			LOG.debug(cs);
 
 			cs.setInt(1, id);
 
