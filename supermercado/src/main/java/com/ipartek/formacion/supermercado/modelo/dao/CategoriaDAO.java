@@ -42,7 +42,7 @@ public class CategoriaDAO implements IDAO<Categoria>{
 	@Override
 	public ArrayList<Categoria> getAll() {
 		
-		LOG.trace("Recuperando todas las categorias de la base de datos...");
+		LOG.trace("Recuperar todas las categorias de la base de datos.");
 		
 		ArrayList<Categoria> lista = new ArrayList<Categoria>();
 
@@ -77,6 +77,8 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		
 		Categoria resul = null;
 		
+		LOG.trace("Recuperar la categoria " + id + " de la base de datos.");
+		
 		try (			
 				Connection con = ConnectionManager.getConnection();				
 				CallableStatement cs = con.prepareCall("{CALL pa_categoria_getbyid(?)}");
@@ -105,6 +107,8 @@ public class CategoriaDAO implements IDAO<Categoria>{
 
 	@Override
 	public Categoria delete(int id) throws Exception {
+		
+		LOG.trace("Eliminar la categoria " + id);
 		
 		Categoria resul = this.getById(id);
 		
@@ -138,6 +142,8 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		
 		Categoria resul = null;
 		
+		LOG.trace("Modificar la categoria " + id + ". Datos a modificar -> " + pojo);
+		
 		try (
 				
 			Connection con = ConnectionManager.getConnection();
@@ -152,6 +158,8 @@ public class CategoriaDAO implements IDAO<Categoria>{
 			if (affectedRows == 1) {
 				
 				resul = this.getById(id);
+				
+				LOG.trace("Categoria " + id + " modificada. Datos de la categoria -> " + resul);
 				
 			} else {
 				
@@ -168,7 +176,7 @@ public class CategoriaDAO implements IDAO<Categoria>{
 		
 		Categoria resul = null;
 		
-		LOG.trace("Insertar nueva categoria: " + pojo);
+		LOG.trace("Crear nueva categoria -> " + pojo);
 		
 		try (
 				
@@ -194,6 +202,8 @@ public class CategoriaDAO implements IDAO<Categoria>{
 			resul = pojo;
 			
 			resul.setId(cs.getInt(2));
+			
+			LOG.trace("Categoria creada -> " + resul);
 
 		}
 

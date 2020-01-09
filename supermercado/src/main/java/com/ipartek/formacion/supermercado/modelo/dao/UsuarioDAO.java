@@ -48,6 +48,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 	public ArrayList<Usuario> getAll() {
 		
 		ArrayList<Usuario> lista = new ArrayList<Usuario>();
+		
+		LOG.trace("Recuperar todos los usuarios de la base de datos.");
 
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
@@ -69,6 +71,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 	@Override
 	public Usuario getById(int id) throws Exception {
+		
+		LOG.trace("Recuperar el usuario con el id = " + id);
 		
 		Usuario resul = null;
 		
@@ -97,6 +101,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 	@Override
 	public Usuario delete(int id) throws Exception {
+		
+		LOG.trace("Eliminar el usuario con el id = " + id);
 		
 		Usuario resul = this.getById(id);
 		
@@ -127,6 +133,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 	@Override
 	public Usuario update(int id, Usuario pojo) throws Exception {
+		
+		LOG.trace("Modificar el usuario con el id = " + id + ". Campo a modificar = " + pojo);
 		
 		Usuario resul = null;
 		
@@ -162,6 +170,8 @@ public class UsuarioDAO implements IUsuarioDAO{
 		
 		Usuario resul = null;
 		
+		LOG.trace("Crear el usuario -> " + pojo);
+		
 		try (
 				
 			Connection con = ConnectionManager.getConnection();
@@ -175,11 +185,12 @@ public class UsuarioDAO implements IUsuarioDAO{
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
-				// conseguimos el ID que acabamos de crear
 				ResultSet rs = pst.getGeneratedKeys();
 				if (rs.next()) {
 					pojo.setId(rs.getInt(1));
 				}
+				
+				LOG.trace("Usuario " + pojo + " creado.");
 
 			}
 

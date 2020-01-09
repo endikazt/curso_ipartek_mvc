@@ -52,6 +52,8 @@ public class ProductoDAO implements IProductoDAO{
 	@Override
 	public ArrayList<Producto> getAll() throws Exception {
 		
+		LOG.trace("Recuperar todos los productos de la base de datos.");
+		
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 
 		try (Connection con = ConnectionManager.getConnection();
@@ -74,6 +76,8 @@ public class ProductoDAO implements IProductoDAO{
 	
 	@Override
 	public ArrayList<Producto> getAllByUser(int id) {
+		
+		LOG.trace("Recuperar todos los productos creados por el usuario " + id + "de la base de datos.");
 		
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 
@@ -111,6 +115,8 @@ public class ProductoDAO implements IProductoDAO{
 	@Override
 	public Producto getById(int id) throws Exception {
 		
+		LOG.trace("Recuperar producto con id = " + id);
+		
 		Producto resul = new Producto();
 		
 		try (			
@@ -126,11 +132,12 @@ public class ProductoDAO implements IProductoDAO{
 					
 					resul = mapper(rs);
 					
+				} else {
+					
+					throw new Exception("Producto no encontrado. ID = " + id);					
+					
 				}
 			}
-			
-		} catch (Exception e) {
-			LOG.error(e);
 		}
 		
 		return resul;
@@ -138,6 +145,8 @@ public class ProductoDAO implements IProductoDAO{
 	
 	@Override
 	public Producto getByIdByUser(int idProducto, int idUsuario) throws ProductoException {
+		
+		LOG.trace("Recuperar producto " + idProducto + "por el usuario " + idUsuario);
 		
 		Producto resul = null;
 		
@@ -158,12 +167,15 @@ public class ProductoDAO implements IProductoDAO{
 					
 				} else {
 					
+					LOG.trace("Recuperacion denegada. El usuario " + idUsuario + " no es el propietario del producto " + idProducto);
+					
 					throw new ProductoException(ProductoException.EXCEPTION_UNAUTORIZED);
 					
 				}
 			}
 			
 		} catch (Exception e) {
+			
 			LOG.error(e);
 		}
 		
@@ -172,6 +184,8 @@ public class ProductoDAO implements IProductoDAO{
 
 	@Override
 	public Producto delete(int id) throws Exception {
+		
+		LOG.trace("Eliminar producto " + id);
 		
 		Producto resul = this.getById(id);
 		
@@ -203,6 +217,8 @@ public class ProductoDAO implements IProductoDAO{
 	@Override
 	public Producto deleteByUser(int idProducto, int idUsuario) throws ProductoException {
 		
+		LOG.trace("Eliminar producto " + idProducto + "por el usuario " + idUsuario);
+		
 		Producto resul = this.getByIdByUser(idProducto, idUsuario);
 		
 		try (
@@ -218,9 +234,11 @@ public class ProductoDAO implements IProductoDAO{
 			int affetedRows = pst.executeUpdate();
 			if (affetedRows == 1) {
 				
-				LOG.info("Eliminacion completada. Prodcuto = " + resul.toString());
+				LOG.info("Eliminacion completada. Producto = " + resul.toString());
 				
 			} else {
+				
+				LOG.trace("Eliminacion denegada. El usuario " + idUsuario + " no es el propietario del producto " + idProducto);
 				
 				throw new ProductoException(ProductoException.EXCEPTION_UNAUTORIZED);
 				
@@ -235,6 +253,8 @@ public class ProductoDAO implements IProductoDAO{
 
 	@Override
 	public Producto update(int id, Producto pojo) throws Exception {
+		
+		LOG.trace("Modificar producto " + id + ". Datos -> " + pojo);
 		
 		Producto resul = null;
 		
@@ -272,6 +292,8 @@ public class ProductoDAO implements IProductoDAO{
 	@Override
 	public Producto updateByUser(int idProducto, int idUsuario, Producto pojo) throws ProductoException {
 		
+		LOG.trace("Modificar producto " + idProducto + "por el usuario " + idUsuario + ". Datos -> " + pojo);
+		
 		Producto resul = null;
 		
 		try (
@@ -298,6 +320,8 @@ public class ProductoDAO implements IProductoDAO{
 				
 			} else {
 				
+				LOG.trace("Modificacion denegada. El usuario " + idUsuario + " no es el propietario del producto " + idProducto);
+				
 				throw new ProductoException(ProductoException.EXCEPTION_UNAUTORIZED);
 				
 			}
@@ -310,6 +334,8 @@ public class ProductoDAO implements IProductoDAO{
 
 	@Override
 	public Producto create(Producto pojo) throws Exception {
+		
+		LOG.trace("Crear producto -> " + pojo);
 		
 		Producto resul = null;
 		
@@ -330,10 +356,17 @@ public class ProductoDAO implements IProductoDAO{
 
 			int affectedRows = pst.executeUpdate();
 			if (affectedRows == 1) {
+				
 				// conseguimos el ID que acabamos de crear
 				ResultSet rs = pst.getGeneratedKeys();
+				
 				if (rs.next()) {
+					
 					pojo.setId(rs.getInt(1));
+					
+					LOG.trace("Producto creado -> " + pojo);
+					
+					resul = pojo;
 				}
 
 			}
@@ -366,6 +399,9 @@ public class ProductoDAO implements IProductoDAO{
 
 	@Override
 	public ArrayList<Producto> getAllByCategoriaAndSearchParam(int id, String searchParam) {
+		
+		LOG.trace("Recuperar todos los productos de la categoria " + id + " que contengan el parametro '" + searchParam + "'");
+		
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 		
 		try (			
@@ -397,6 +433,9 @@ public class ProductoDAO implements IProductoDAO{
 
 	@Override
 	public ArrayList<Producto> getAllByCategoria(int id) {
+		
+		LOG.trace("Recuperar todos los productos de la categoria " + id);
+		
 		ArrayList<Producto> lista = new ArrayList<Producto>();
 		
 		try (			

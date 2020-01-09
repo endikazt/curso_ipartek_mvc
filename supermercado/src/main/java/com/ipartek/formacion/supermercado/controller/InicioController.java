@@ -84,6 +84,8 @@ public class InicioController extends HttpServlet {
 		
 		if(pAccion == null) {  					// Si la variable pAccion es null lista todos los productos
 			
+			LOG.trace("Listar todos los productos.");
+			
 			try {
 				productos = dao.getAll();
 				categorias = daoCategoria.getAll();
@@ -94,6 +96,8 @@ public class InicioController extends HttpServlet {
 		} else {
 			
 			if(!pProducto.trim().equals("") && pProducto != null ) {	   		// Si el campo de pProducto no es null ni esta vacio, lista los productos que contengan ese parametro dentro de la categoria
+				
+				LOG.trace("Listar todos los productos de la categoria " + pCategoria + " y que contengan '" + pProducto + "'");				
 				
 				try {
 					
@@ -118,6 +122,8 @@ public class InicioController extends HttpServlet {
 				
 				
 			} else {			// Si el campo pProducto es nulo o esta vacio, lista todos los productos de la categoria seleccionada
+				
+				LOG.trace("Listar todos los productos de la categoria " + pCategoria);
 				
 				try {
 					
