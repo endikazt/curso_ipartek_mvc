@@ -89,6 +89,9 @@ public class CategoriaDAO implements IDAO<Categoria>{
 				if (rs.next()) {
 					
 					resul = mapper(rs);
+				} else {
+					
+					throw new Exception("Categoria no encontrada. ID = " + id);
 					
 				}
 			}

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,23 +42,23 @@ public class InicioController extends HttpServlet {
 	public void destroy() {
 		super.destroy();
 		dao = null;
+		daoCategoria = null;
 		
 	}
 	
 	@Override
-	public void service(ServletRequest req, ServletResponse resp) throws ServletException, IOException {
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		if(null == ConnectionManager.getConnection()) {
+		if ( null == ConnectionManager.getConnection() ) {
 			
-			//resp.se
+			resp.sendRedirect( req.getContextPath() + "/error.jsp");
 			
-		}
+		} else {
 		
-		else {
-			
+			// llama a GET o POST
 			super.service(req, resp);
 			
-		}
+		}	
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -79,9 +77,10 @@ public class InicioController extends HttpServlet {
 		ArrayList<Producto> productos = null;
 		ArrayList<Categoria> categorias = null;
 		
-		LOG.debug(pCategoria + " " + pProducto + " " + pAccion);
-		
 		Alerta alerta = new Alerta();
+		
+		alerta.setTexto("Las mejores ofertas para ti.");
+		alerta.setTipo(Alerta.TIPO_PRIMARY);
 		
 		if(pAccion == null) {
 			
@@ -92,23 +91,18 @@ public class InicioController extends HttpServlet {
 				LOG.error(e);
 			}
 			
-			alerta.setTexto("Las mejores ofertas para ti.");
-			alerta.setTipo(Alerta.TIPO_PRIMARY);
-			
 		} else {
 			
 			if(!pProducto.trim().equals("") && pProducto != null ) {	
 				
-				LOG.debug("ENTRANDO A LA PARTE DE OBETENER TODOS POR PARAM");
-				
 				try {
 					
-					productos = dao.getAllByCategoriaAndSearchParam(Integer.parseInt(pCategoria), pProducto);
+					String searchParam = "%" + pProducto + "%";
 					
-					LOG.debug(productos);
+					productos = dao.getAllByCategoriaAndSearchParam(Integer.parseInt(pCategoria), searchParam);
 					
 					categorias = daoCategoria.getAll();
-					
+			
 				} catch (NumberFormatException e) {
 					
 					alerta.setTexto("Ha ocurrido un error al procesar la solicitud. Intentelo de nuevo.");
@@ -124,9 +118,6 @@ public class InicioController extends HttpServlet {
 				
 				
 			} else {
-				
-				LOG.debug("ENTRANDO A LA PARTE DE OBETENER TODOS POR CATEGORIA");
-				
 				
 				try {
 					productos = dao.getAllByCategoria(Integer.parseInt(pCategoria));
