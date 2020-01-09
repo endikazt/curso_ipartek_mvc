@@ -82,7 +82,7 @@ public class InicioController extends HttpServlet {
 		alerta.setTexto("Las mejores ofertas para ti.");
 		alerta.setTipo(Alerta.TIPO_PRIMARY);
 		
-		if(pAccion == null) {
+		if(pAccion == null) {  					// Si la variable pAccion es null lista todos los productos
 			
 			try {
 				productos = dao.getAll();
@@ -93,7 +93,7 @@ public class InicioController extends HttpServlet {
 			
 		} else {
 			
-			if(!pProducto.trim().equals("") && pProducto != null ) {	
+			if(!pProducto.trim().equals("") && pProducto != null ) {	   		// Si el campo de pProducto no es null ni esta vacio, lista los productos que contengan ese parametro dentro de la categoria
 				
 				try {
 					
@@ -117,11 +117,13 @@ public class InicioController extends HttpServlet {
 				}
 				
 				
-			} else {
+			} else {			// Si el campo pProducto es nulo o esta vacio, lista todos los productos de la categoria seleccionada
 				
 				try {
+					
 					productos = dao.getAllByCategoria(Integer.parseInt(pCategoria));
 					categorias = daoCategoria.getAll();
+					
 				} catch (NumberFormatException e) {
 					
 					alerta.setTexto("Ha ocurrido un error al procesar la solicitud. Intentelo de nuevo.");
@@ -134,7 +136,6 @@ public class InicioController extends HttpServlet {
 						LOG.error(e);
 					}
 				}
-				
 				
 			}
 
