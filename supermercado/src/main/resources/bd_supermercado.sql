@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `historico_producto_precio` (
   CONSTRAINT `FK__producto` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla supermercado.historico_producto_precio: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla supermercado.historico_producto_precio: ~1 rows (aproximadamente)
 DELETE FROM `historico_producto_precio`;
 /*!40000 ALTER TABLE `historico_producto_precio` DISABLE KEYS */;
 INSERT INTO `historico_producto_precio` (`id`, `id_producto`, `precio_antiguo`, `precio_nuevo`, `fecha`) VALUES
@@ -137,7 +137,8 @@ DELETE FROM `usuario`;
 INSERT INTO `usuario` (`id`, `nombre`, `password`, `id_rol`) VALUES
 	(1, 'endika', '123456', 2),
 	(2, 'admin', 'admin', 1),
-	(4, 'prueba', 'prueba', 2);
+	(4, 'prueba', 'prueba', 2),
+	(5, 'prueba2', 'prueba2', 2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 -- Volcando estructura para procedimiento supermercado.pa_categoria_delete
@@ -306,8 +307,13 @@ CREATE TRIGGER `tbi_producto` BEFORE INSERT ON `producto` FOR EACH ROW BEGIN
 	
 	**/
 
-	IF NEW.descuento < 0 THEN SET NEW.descuento = 0; END IF;
-	IF NEW.descuento > 100 THEN SET NEW.descuento = 100; END IF;
+	IF NEW.descuento < 0 THEN 
+		SET NEW.descuento = 0; 
+	END IF;
+	
+	IF NEW.descuento > 100 THEN 
+		SET NEW.descuento = 100; 
+	END IF;
 	
 	-- Inserta la fecha actual a la fecha de modificacion
 	
@@ -330,15 +336,21 @@ CREATE TRIGGER `tbu_producto` BEFORE UPDATE ON `producto` FOR EACH ROW BEGIN
 	
 	**/
 	
-	IF NEW.descuento < 0 THEN SET NEW.descuento = 0; END IF;
-	IF NEW.descuento > 100 THEN SET NEW.descuento = 100; END IF;
+	IF NEW.descuento < 0 THEN 
+		SET NEW.descuento = 0; 
+	END IF;
+	
+	IF NEW.descuento > 100 THEN 
+		SET NEW.descuento = 100; 
+	END IF;
 	
 	-- Inserta en el campo de fecha_modificacion un timestamp de la fecha actual
 	
 	SET NEW.fecha_modificacion = CURRENT_TIMESTAMP();
 	
 	IF NEW.precio != OLD.precio THEN 
-	INSERT INTO historico_producto_precio (id_producto, precio_antiguo, precio_nuevo) VALUES (NEW.id, OLD.precio, NEW.precio); END IF;
+		INSERT INTO historico_producto_precio (id_producto, precio_antiguo, precio_nuevo) VALUES (NEW.id, OLD.precio, NEW.precio); 
+	END IF;
 
 END//
 DELIMITER ;
